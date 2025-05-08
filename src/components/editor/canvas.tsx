@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, Suspense, useCallback } from "react";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber";
 import {
   OrbitControls,
   TransformControls,
@@ -44,21 +44,23 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     pasteObject,
     cutObject,
     deleteObject,
+    undo,
+    redo,
   } = useEditorStore();
 
   // Transform mode mapping from store's activeTool
-  const transformMode =
-    activeTool === "move"
-      ? "translate"
-      : activeTool === "rotate"
-      ? "rotate"
-      : activeTool === "scale"
-      ? "scale"
-      : undefined;
+  const getTransformMode = () => {
+    if (activeTool === "move") return "translate";
+    if (activeTool === "rotate") return "rotate";
+    if (activeTool === "scale") return "scale";
+    return undefined;
+  };
+
+  const transformMode = getTransformMode();
 
   // Handle object selection
   const handleSelect = useCallback(
-    (id: string, e: THREE.Event) => {
+    (id: string, e: ThreeEvent<MouseEvent>) => {
       e.stopPropagation();
       selectObject(id);
       setSelectedObject(id);
@@ -113,6 +115,16 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
           case "v":
             pasteObject();
             break;
+          case "z":
+            // Undo
+            e.preventDefault();
+            undo();
+            break;
+          case "y":
+            // Redo
+            e.preventDefault();
+            redo();
+            break;
         }
       }
 
@@ -135,6 +147,8 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     pasteObject,
     deleteObject,
     setSelectedObject,
+    undo,
+    redo,
   ]);
 
   // Handle transform changes
@@ -351,7 +365,7 @@ export default function EditorCanvas({
     e: React.DragEvent,
     camera: THREE.Camera,
     targetZ = 0
-  ) => {
+  ): [number, number, number] => {
     if (!canvasRef.current) return [0, 0, 0];
 
     const rect = canvasRef.current.getBoundingClientRect();
@@ -367,7 +381,7 @@ export default function EditorCanvas({
     const distance = (targetZ - camera.position.z) / dir.z;
     const pos = camera.position.clone().add(dir.multiplyScalar(distance));
 
-    return [pos.x, targetZ, pos.z] as [number, number, number];
+    return [pos.x, targetZ, pos.z];
   };
 
   // Handle drag & drop

@@ -36,6 +36,16 @@ export interface Scene {
   objects: Object3D[];
 }
 
+// Nouvel interface pour représenter une entrée dans l'historique
+interface HistoryEntry {
+  state: {
+    scene: Scene;
+    selectedObjectId: string | null;
+  };
+  description: string; // Description de l'action pour les toasts
+  timestamp: number;
+}
+
 interface EditorState {
   // Project details
   projectId: string | null;
@@ -51,6 +61,11 @@ interface EditorState {
 
   // Clipboard state
   clipboard: Object3D | null;
+
+  // Historique pour undo/redo
+  history: HistoryEntry[];
+  historyIndex: number;
+  maxHistorySize: number;
 
   // Collaboration
   isCollaborating: boolean;
@@ -76,6 +91,12 @@ interface EditorState {
   pasteObject: () => void;
 
   setActiveTool: (tool: "select" | "move" | "rotate" | "scale") => void;
+
+  // Undo/Redo actions
+  undo: () => void;
+  redo: () => void;
+  saveToHistory: (description: string) => void;
+  clearHistory: () => void;
 
   startCollaboration: () => void;
   stopCollaboration: () => void;
@@ -132,6 +153,11 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   // Clipboard state
   clipboard: null,
 
+  // Nouvel état pour l'historique
+  history: [],
+  historyIndex: -1,
+  maxHistorySize: 50,
+
   // Collaboration
   isCollaborating: false,
   collaborators: [],
@@ -143,6 +169,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
   setProjectName: (name) => {
     set({ projectName: name, isModified: true });
+    get().saveToHistory(`Project renamed to ${name}`);
   },
 
   markAsModified: () => set({ isModified: true }),
@@ -182,6 +209,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       isModified: true,
     }));
 
+    // Ajouter l'action à l'historique
+    get().saveToHistory(`Added ${newName}`);
+
     toast.success(`Added ${newName}`);
   },
 
@@ -191,8 +221,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       if (objectIndex === -1) return state;
 
       const updatedObjects = [...state.scene.objects];
+      const oldObject = { ...updatedObjects[objectIndex] };
       updatedObjects[objectIndex] = {
-        ...updatedObjects[objectIndex],
+        ...oldObject,
         ...updates,
       };
 
@@ -204,16 +235,19 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         isModified: true,
       };
     });
+
+    // Ajout à l'historique après mise à jour
+    get().saveToHistory(`Updated ${id}`);
   },
 
   deleteObject: (id) => {
+    const objectToDelete = get().scene.objects.find((obj) => obj.id === id);
+    if (!objectToDelete) return;
+
+    const objectName = objectToDelete.name;
+
     set((state) => {
-      const objectToDelete = state.scene.objects.find((obj) => obj.id === id);
-      if (!objectToDelete) return state;
-
       const updatedObjects = state.scene.objects.filter((obj) => obj.id !== id);
-
-      toast.success(`Deleted ${objectToDelete.name}`);
 
       return {
         scene: {
@@ -224,38 +258,40 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         isModified: true,
       };
     });
+
+    // Ajouter à l'historique
+    get().saveToHistory(`Deleted ${objectName}`);
+    toast.success(`Deleted ${objectName}`);
   },
 
   duplicateObject: (id) => {
-    set((state) => {
-      const objectToDuplicate = state.scene.objects.find(
-        (obj) => obj.id === id
-      );
-      if (!objectToDuplicate) return state;
+    const objectToDuplicate = get().scene.objects.find((obj) => obj.id === id);
+    if (!objectToDuplicate) return;
 
-      const newId = `${objectToDuplicate.type}-${generateId()}`;
-      const newObject: Object3D = {
-        ...JSON.parse(JSON.stringify(objectToDuplicate)),
-        id: newId,
-        name: `${objectToDuplicate.name} (Copy)`,
-        position: {
-          x: objectToDuplicate.position.x + 1,
-          y: objectToDuplicate.position.y,
-          z: objectToDuplicate.position.z,
-        },
-      };
+    const newId = `${objectToDuplicate.type}-${generateId()}`;
+    const newObject: Object3D = {
+      ...JSON.parse(JSON.stringify(objectToDuplicate)),
+      id: newId,
+      name: `${objectToDuplicate.name} (Copy)`,
+      position: {
+        x: objectToDuplicate.position.x + 1,
+        y: objectToDuplicate.position.y,
+        z: objectToDuplicate.position.z,
+      },
+    };
 
-      toast.success(`Duplicated ${objectToDuplicate.name}`);
+    set((state) => ({
+      scene: {
+        ...state.scene,
+        objects: [...state.scene.objects, newObject],
+      },
+      selectedObjectId: newId,
+      isModified: true,
+    }));
 
-      return {
-        scene: {
-          ...state.scene,
-          objects: [...state.scene.objects, newObject],
-        },
-        selectedObjectId: newId,
-        isModified: true,
-      };
-    });
+    // Ajouter à l'historique
+    get().saveToHistory(`Duplicated ${objectToDuplicate.name}`);
+    toast.success(`Duplicated ${objectToDuplicate.name}`);
   },
 
   // New clipboard actions
@@ -287,6 +323,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       isModified: true,
     }));
 
+    // Ajouter à l'historique
+    get().saveToHistory(`Cut ${objectToCut.name}`);
     toast.success(`Cut ${objectToCut.name} to clipboard`);
   },
 
@@ -318,6 +356,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       isModified: true,
     }));
 
+    // Ajouter à l'historique
+    get().saveToHistory(`Pasted ${newObject.name}`);
     toast.success(`Pasted ${newObject.name} from clipboard`);
   },
 
@@ -326,9 +366,106 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     toast.success(`Selected ${tool} tool`);
   },
 
+  // Nouvelles fonctions d'historique
+  saveToHistory: (description) => {
+    set((state) => {
+      // Créer une entrée d'historique avec l'état actuel
+      const currentState: HistoryEntry = {
+        state: {
+          scene: JSON.parse(JSON.stringify(state.scene)), // Deep copy
+          selectedObjectId: state.selectedObjectId,
+        },
+        description: description,
+        timestamp: Date.now(),
+      };
+
+      // Supprimer tout ce qui est après l'index actuel (si on fait un undo puis une action)
+      const newHistory = state.history.slice(0, state.historyIndex + 1);
+
+      // Ajouter l'état actuel à l'historique
+      newHistory.push(currentState);
+
+      // Limiter la taille de l'historique
+      if (newHistory.length > state.maxHistorySize) {
+        newHistory.shift(); // Supprimer l'entrée la plus ancienne
+      }
+
+      return {
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+      };
+    });
+  },
+
+  undo: () => {
+    set((state) => {
+      // Vérifier si on peut faire un undo
+      if (state.historyIndex <= 0 || state.history.length === 0) {
+        toast.error("Nothing to undo");
+        return state;
+      }
+
+      const newIndex = state.historyIndex - 1;
+      const prevState = state.history[newIndex].state;
+      const actionDescription = state.history[newIndex + 1].description;
+
+      toast.success(`Undo: ${actionDescription}`);
+
+      return {
+        scene: JSON.parse(JSON.stringify(prevState.scene)), // Deep copy
+        selectedObjectId: prevState.selectedObjectId,
+        historyIndex: newIndex,
+        isModified: true,
+      };
+    });
+  },
+
+  redo: () => {
+    set((state) => {
+      // Vérifier si on peut faire un redo
+      if (state.historyIndex >= state.history.length - 1) {
+        toast.error("Nothing to redo");
+        return state;
+      }
+
+      const newIndex = state.historyIndex + 1;
+      const nextState = state.history[newIndex].state;
+      const actionDescription = state.history[newIndex].description;
+
+      toast.success(`Redo: ${actionDescription}`);
+
+      return {
+        scene: JSON.parse(JSON.stringify(nextState.scene)), // Deep copy
+        selectedObjectId: nextState.selectedObjectId,
+        historyIndex: newIndex,
+        isModified: true,
+      };
+    });
+  },
+
+  clearHistory: () => {
+    // Sauvegarder l'état actuel comme point de départ
+    const currentScene = get().scene;
+    const currentSelection = get().selectedObjectId;
+
+    set({
+      history: [
+        {
+          state: {
+            scene: JSON.parse(JSON.stringify(currentScene)),
+            selectedObjectId: currentSelection,
+          },
+          description: "Initial state",
+          timestamp: Date.now(),
+        },
+      ],
+      historyIndex: 0,
+    });
+  },
+
   startCollaboration: () => {
     const { projectId, projectName } = get();
-    const roomId = projectId || `project-${generateId()}`;
+    const roomId = projectId ?? `project-${generateId()}`;
 
     // Create a Y.js document
     const doc = new Y.Doc();

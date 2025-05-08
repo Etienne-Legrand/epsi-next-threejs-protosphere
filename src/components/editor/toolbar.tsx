@@ -32,7 +32,7 @@ interface EditorToolbarProps {
 export default function EditorToolbar({
   selectedObject,
   setSelectedObject,
-}: EditorToolbarProps) {
+}: Readonly<EditorToolbarProps>) {
   // Get state and actions from the store
   const {
     activeTool,
@@ -44,6 +44,10 @@ export default function EditorToolbar({
     pasteObject,
     clipboard,
     markAsModified,
+    undo,
+    redo,
+    history,
+    historyIndex,
   } = useEditorStore();
 
   // Handle tool clicks
@@ -85,11 +89,9 @@ export default function EditorToolbar({
   // Handle history operations
   const handleHistoryOperation = (operation: "undo" | "redo") => {
     if (operation === "undo") {
-      // In a real app: useEditorStore.getState().undo()
-      toast.success("Undo successful");
+      undo();
     } else {
-      // In a real app: useEditorStore.getState().redo()
-      toast.success("Redo successful");
+      redo();
     }
   };
 
@@ -274,7 +276,7 @@ export default function EditorToolbar({
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => handleHistoryOperation("undo")}
-                disabled={false}
+                disabled={historyIndex <= 0}
               >
                 <CornerUpLeft className="h-4 w-4" />
               </Button>
@@ -291,7 +293,7 @@ export default function EditorToolbar({
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => handleHistoryOperation("redo")}
-                disabled={false}
+                disabled={historyIndex >= history.length - 1}
               >
                 <CornerUpRight className="h-4 w-4" />
               </Button>

@@ -24,6 +24,7 @@ export default function EditorPage() {
     isCollaborating,
     startCollaboration,
     stopCollaboration,
+    clearHistory,
   } = useEditorStore();
 
   const [showProperties, setShowProperties] = useState(true);
@@ -43,7 +44,14 @@ export default function EditorPage() {
       setProjectName("Untitled Project");
       toast.success("New blank project created");
     }
-  }, [projectId, templateId, setProjectId, setProjectName]);
+
+    // Initialiser l'historique avec l'état actuel comme point de départ
+    // Important de le faire après le chargement du projet pour capturer l'état initial
+    setTimeout(() => {
+      clearHistory();
+      toast.success("Undo/Redo history initialized");
+    }, 500); // Petit délai pour s'assurer que tout est bien chargé
+  }, [projectId, templateId, setProjectId, setProjectName, clearHistory]);
 
   // Set selected object in local state and store
   const handleSelectObject = (id: string | null) => {
