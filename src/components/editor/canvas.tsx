@@ -40,6 +40,10 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     updateObject,
     activeTool,
     setActiveTool,
+    copyObject,
+    pasteObject,
+    cutObject,
+    deleteObject,
   } = useEditorStore();
 
   // Transform mode mapping from store's activeTool
@@ -74,6 +78,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
   // Key event listener to change transform mode
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Tool shortcuts
       if (selectedObject) {
         switch (e.key.toLowerCase()) {
           case "g":
@@ -90,13 +95,47 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
             break;
         }
       }
+
+      // Clipboard shortcuts
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key.toLowerCase()) {
+          case "c":
+            if (selectedObject) {
+              copyObject(selectedObject);
+            }
+            break;
+          case "x":
+            if (selectedObject) {
+              cutObject(selectedObject);
+              setSelectedObject(null);
+            }
+            break;
+          case "v":
+            pasteObject();
+            break;
+        }
+      }
+
+      // Delete shortcut
+      if (e.key === "Delete" && selectedObject) {
+        deleteObject(selectedObject);
+        setSelectedObject(null);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedObject, setActiveTool]);
+  }, [
+    selectedObject,
+    setActiveTool,
+    copyObject,
+    cutObject,
+    pasteObject,
+    deleteObject,
+    setSelectedObject,
+  ]);
 
   // Handle transform changes
   const handleTransformChange = (e: any) => {

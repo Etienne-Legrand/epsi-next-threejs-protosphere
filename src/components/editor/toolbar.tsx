@@ -19,6 +19,7 @@ import {
   CornerUpLeft,
   CornerUpRight,
   Camera,
+  Clipboard,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useEditorStore } from "@/lib/store/editor-store";
@@ -38,6 +39,10 @@ export default function EditorToolbar({
     setActiveTool,
     deleteObject,
     duplicateObject,
+    copyObject,
+    cutObject,
+    pasteObject,
+    clipboard,
     markAsModified,
   } = useEditorStore();
 
@@ -49,23 +54,27 @@ export default function EditorToolbar({
   };
 
   // Handle clipboard operations
-  const handleClipboardOperation = (operation: "copy" | "cut" | "delete") => {
+  const handleClipboardOperation = (
+    operation: "copy" | "cut" | "paste" | "delete"
+  ) => {
+    if (operation === "paste") {
+      pasteObject();
+      markAsModified();
+      return;
+    }
+
     if (!selectedObject) return;
 
     switch (operation) {
       case "copy":
-        // Copy to clipboard
-        duplicateObject(selectedObject);
+        copyObject(selectedObject);
         break;
       case "cut":
-        // Cut operation
-        toast.success(`Cut object: ${selectedObject}`);
-        deleteObject(selectedObject);
+        cutObject(selectedObject);
         setSelectedObject(null);
         markAsModified();
         break;
       case "delete":
-        // Delete object
         deleteObject(selectedObject);
         setSelectedObject(null);
         markAsModified();
@@ -199,6 +208,23 @@ export default function EditorToolbar({
               </Button>
             </TooltipTrigger>
             <TooltipContent>Cut (Ctrl+X)</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => handleClipboardOperation("paste")}
+                disabled={!clipboard}
+              >
+                <Clipboard className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Paste (Ctrl+V)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 

@@ -7,7 +7,15 @@ import { WebsocketProvider } from "y-websocket";
 import { toast } from "sonner";
 
 // Type definitions
-export type ObjectType = "cube" | "sphere" | "cylinder" | "cone" | "torus" | "plane" | "pyramid" | "text";
+export type ObjectType =
+  | "cube"
+  | "sphere"
+  | "cylinder"
+  | "cone"
+  | "torus"
+  | "plane"
+  | "pyramid"
+  | "text";
 
 export interface Object3D {
   id: string;
@@ -41,6 +49,9 @@ interface EditorState {
   // Tool state
   activeTool: "select" | "move" | "rotate" | "scale";
 
+  // Clipboard state
+  clipboard: Object3D | null;
+
   // Collaboration
   isCollaborating: boolean;
   collaborators: { id: string; name: string; color: string }[];
@@ -58,6 +69,11 @@ interface EditorState {
   updateObject: (id: string, updates: Partial<Object3D>) => void;
   deleteObject: (id: string) => void;
   duplicateObject: (id: string) => void;
+
+  // Clipboard actions
+  copyObject: (id: string) => void;
+  cutObject: (id: string) => void;
+  pasteObject: () => void;
 
   setActiveTool: (tool: "select" | "move" | "rotate" | "scale") => void;
 
@@ -89,8 +105,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
           color: "#4c6ef5",
           metalness: 0.1,
           roughness: 0.2,
-          opacity: 1.0
-        }
+          opacity: 1.0,
+        },
       },
       {
         id: "sphere-1",
@@ -103,15 +119,18 @@ export const useEditorStore = create<EditorState>((set, get) => ({
           color: "#ae3ec9",
           metalness: 0.1,
           roughness: 0.2,
-          opacity: 1.0
-        }
-      }
-    ]
+          opacity: 1.0,
+        },
+      },
+    ],
   },
   selectedObjectId: null,
 
   // Tool state
   activeTool: "select",
+
+  // Clipboard state
+  clipboard: null,
 
   // Collaboration
   isCollaborating: false,
@@ -135,7 +154,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
   addObject: (type) => {
     const newId = `${type}-${generateId()}`;
-    const newName = `${type.charAt(0).toUpperCase() + type.slice(1)} ${generateId().substring(0, 4)}`;
+    const newName = `${
+      type.charAt(0).toUpperCase() + type.slice(1)
+    } ${generateId().substring(0, 4)}`;
 
     const newObject: Object3D = {
       id: newId,
@@ -148,17 +169,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         color: "#" + Math.floor(Math.random() * 16777215).toString(16),
         metalness: 0.1,
         roughness: 0.2,
-        opacity: 1.0
-      }
+        opacity: 1.0,
+      },
     };
 
     set((state) => ({
       scene: {
         ...state.scene,
-        objects: [...state.scene.objects, newObject]
+        objects: [...state.scene.objects, newObject],
       },
       selectedObjectId: newId,
-      isModified: true
+      isModified: true,
     }));
 
     toast.success(`Added ${newName}`);
@@ -166,45 +187,50 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
   updateObject: (id, updates) => {
     set((state) => {
-      const objectIndex = state.scene.objects.findIndex(obj => obj.id === id);
+      const objectIndex = state.scene.objects.findIndex((obj) => obj.id === id);
       if (objectIndex === -1) return state;
 
       const updatedObjects = [...state.scene.objects];
-      updatedObjects[objectIndex] = { ...updatedObjects[objectIndex], ...updates };
+      updatedObjects[objectIndex] = {
+        ...updatedObjects[objectIndex],
+        ...updates,
+      };
 
       return {
         scene: {
           ...state.scene,
-          objects: updatedObjects
+          objects: updatedObjects,
         },
-        isModified: true
+        isModified: true,
       };
     });
   },
 
   deleteObject: (id) => {
     set((state) => {
-      const objectToDelete = state.scene.objects.find(obj => obj.id === id);
+      const objectToDelete = state.scene.objects.find((obj) => obj.id === id);
       if (!objectToDelete) return state;
 
-      const updatedObjects = state.scene.objects.filter(obj => obj.id !== id);
+      const updatedObjects = state.scene.objects.filter((obj) => obj.id !== id);
 
       toast.success(`Deleted ${objectToDelete.name}`);
 
       return {
         scene: {
           ...state.scene,
-          objects: updatedObjects
+          objects: updatedObjects,
         },
         selectedObjectId: null,
-        isModified: true
+        isModified: true,
       };
     });
   },
 
   duplicateObject: (id) => {
     set((state) => {
-      const objectToDuplicate = state.scene.objects.find(obj => obj.id === id);
+      const objectToDuplicate = state.scene.objects.find(
+        (obj) => obj.id === id
+      );
       if (!objectToDuplicate) return state;
 
       const newId = `${objectToDuplicate.type}-${generateId()}`;
@@ -215,8 +241,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         position: {
           x: objectToDuplicate.position.x + 1,
           y: objectToDuplicate.position.y,
-          z: objectToDuplicate.position.z
-        }
+          z: objectToDuplicate.position.z,
+        },
       };
 
       toast.success(`Duplicated ${objectToDuplicate.name}`);
@@ -224,12 +250,75 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       return {
         scene: {
           ...state.scene,
-          objects: [...state.scene.objects, newObject]
+          objects: [...state.scene.objects, newObject],
         },
         selectedObjectId: newId,
-        isModified: true
+        isModified: true,
       };
     });
+  },
+
+  // New clipboard actions
+  copyObject: (id) => {
+    const objectToCopy = get().scene.objects.find((obj) => obj.id === id);
+    if (!objectToCopy) return;
+
+    // Make a deep copy of the object
+    const clipboardObject = JSON.parse(JSON.stringify(objectToCopy));
+    set({ clipboard: clipboardObject });
+    toast.success(`Copied ${objectToCopy.name} to clipboard`);
+  },
+
+  cutObject: (id) => {
+    const objectToCut = get().scene.objects.find((obj) => obj.id === id);
+    if (!objectToCut) return;
+
+    // Make a deep copy of the object before deleting
+    const clipboardObject = JSON.parse(JSON.stringify(objectToCut));
+    set({ clipboard: clipboardObject });
+
+    // Delete the original object
+    set((state) => ({
+      scene: {
+        ...state.scene,
+        objects: state.scene.objects.filter((obj) => obj.id !== id),
+      },
+      selectedObjectId: null,
+      isModified: true,
+    }));
+
+    toast.success(`Cut ${objectToCut.name} to clipboard`);
+  },
+
+  pasteObject: () => {
+    const { clipboard } = get();
+    if (!clipboard) {
+      toast.error("No object in clipboard to paste");
+      return;
+    }
+
+    const newId = `${clipboard.type}-${generateId()}`;
+    const newObject: Object3D = {
+      ...JSON.parse(JSON.stringify(clipboard)),
+      id: newId,
+      name: `${clipboard.name} (Copy)`,
+      position: {
+        x: clipboard.position.x + 1, // Offset position slightly
+        y: clipboard.position.y,
+        z: clipboard.position.z,
+      },
+    };
+
+    set((state) => ({
+      scene: {
+        ...state.scene,
+        objects: [...state.scene.objects, newObject],
+      },
+      selectedObjectId: newId,
+      isModified: true,
+    }));
+
+    toast.success(`Pasted ${newObject.name} from clipboard`);
   },
 
   setActiveTool: (tool) => {
@@ -260,14 +349,14 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       });
 
       // Listen for awareness changes
-      awareness.on('change', () => {
+      awareness.on("change", () => {
         const states = Array.from(awareness.getStates().values());
         set({
           collaborators: states.map((state: any) => ({
             id: state.id,
             name: state.name,
-            color: state.color
-          }))
+            color: state.color,
+          })),
         });
       });
 
@@ -275,7 +364,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       set({
         isCollaborating: true,
         provider,
-        doc
+        doc,
       });
 
       toast.success("Collaboration started - Share the URL to collaborate");
@@ -300,9 +389,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       isCollaborating: false,
       provider: null,
       doc: null,
-      collaborators: []
+      collaborators: [],
     });
 
     toast.success("Collaboration stopped");
-  }
+  },
 }));
