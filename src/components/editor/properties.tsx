@@ -1,89 +1,152 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Copy, ChevronDown, ChevronUp, Box, CircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-
-// Mock data - in real app this would come from the state or a store
-const objectData = {
-  "cube-1": {
-    name: "Cube 1",
-    type: "cube",
-    position: { x: 0, y: 0, z: 0 },
-    rotation: { x: 0, y: 0, z: 0 },
-    scale: { x: 1, y: 1, z: 1 },
-    material: {
-      color: "#4c6ef5",
-      metalness: 0.1,
-      roughness: 0.2,
-      opacity: 1.0
-    }
-  },
-  "sphere-1": {
-    name: "Sphere 1",
-    type: "sphere",
-    position: { x: 2, y: 0, z: 0 },
-    rotation: { x: 0, y: 0, z: 0 },
-    scale: { x: 1, y: 1, z: 1 },
-    material: {
-      color: "#ae3ec9",
-      metalness: 0.1,
-      roughness: 0.2,
-      opacity: 1.0
-    }
-  }
-};
+import { useEditorStore } from "@/lib/store/editor-store";
 
 interface EditorPropertiesProps {
   selectedObject: string;
   onClose: () => void;
 }
 
-export default function EditorProperties({ selectedObject, onClose }: EditorPropertiesProps) {
-  // Get the object data for the selected object
-  const object = objectData[selectedObject as keyof typeof objectData];
+export default function EditorProperties({
+  selectedObject,
+  onClose,
+}: EditorPropertiesProps) {
+  // Get the object data from the store
+  const object = useEditorStore((state) =>
+    state.scene.objects.find((obj) => obj.id === selectedObject)
+  );
 
-  // State for form values (in a real app, this would update the actual 3D scene)
-  const [position, setPosition] = useState(object.position);
-  const [rotation, setRotation] = useState(object.rotation);
-  const [scale, setScale] = useState(object.scale);
-  const [material, setMaterial] = useState(object.material);
-  const [name, setName] = useState(object.name);
+  const updateObject = useEditorStore((state) => state.updateObject);
+  const deleteObject = useEditorStore((state) => state.deleteObject);
+  const duplicateObject = useEditorStore((state) => state.duplicateObject);
+
+  // State for form values
+  const [position, setPosition] = useState(
+    object?.position || { x: 0, y: 0, z: 0 }
+  );
+  const [rotation, setRotation] = useState(
+    object?.rotation || { x: 0, y: 0, z: 0 }
+  );
+  const [scale, setScale] = useState(object?.scale || { x: 1, y: 1, z: 1 });
+  const [material, setMaterial] = useState(
+    object?.material || {
+      color: "#ffffff",
+      metalness: 0.1,
+      roughness: 0.2,
+      opacity: 1.0,
+    }
+  );
+  const [name, setName] = useState(object?.name || "");
+
+  // Update local state when selected object changes
+  useEffect(() => {
+    if (object) {
+      setPosition(object.position);
+      setRotation(object.rotation);
+      setScale(object.scale);
+      setMaterial(object.material);
+      setName(object.name);
+    }
+  }, [object, selectedObject]);
+
+  // If no object is found, show an error
+  if (!object) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center">
+        <p>Object not found</p>
+        <Button onClick={onClose}>Close</Button>
+      </div>
+    );
+  }
 
   // Handle changes to the properties
   const handlePositionChange = (axis: keyof typeof position, value: number) => {
-    setPosition({ ...position, [axis]: value });
+    const newPosition = { ...position, [axis]: value };
+    setPosition(newPosition);
+    updateObject(selectedObject, { position: newPosition });
     toast.success(`Updated ${axis} position to ${value}`);
   };
 
   const handleRotationChange = (axis: keyof typeof rotation, value: number) => {
-    setRotation({ ...rotation, [axis]: value });
+    const newRotation = { ...rotation, [axis]: value };
+    setRotation(newRotation);
+    updateObject(selectedObject, { rotation: newRotation });
     toast.success(`Updated ${axis} rotation to ${value}`);
   };
 
   const handleScaleChange = (axis: keyof typeof scale, value: number) => {
-    setScale({ ...scale, [axis]: value });
+    const newScale = { ...scale, [axis]: value };
+    setScale(newScale);
+    updateObject(selectedObject, { scale: newScale });
     toast.success(`Updated ${axis} scale to ${value}`);
   };
 
-  const handleMaterialChange = (property: keyof typeof material, value: any) => {
-    setMaterial({ ...material, [property]: value });
+  const handleMaterialChange = (
+    property: keyof typeof material,
+    value: any
+  ) => {
+    const newMaterial = { ...material, [property]: value };
+    setMaterial(newMaterial);
+    updateObject(selectedObject, {
+      material: newMaterial,
+    });
     toast.success(`Updated material ${property}`);
   };
 
   const handleNameChange = (value: string) => {
     setName(value);
+    updateObject(selectedObject, { name: value });
     toast.success(`Renamed to ${value}`);
+  };
+
+  // Handle object actions
+  const handleDuplicateObject = () => {
+    duplicateObject(selectedObject);
+  };
+
+  const handleCenterObject = () => {
+    const newPosition = { x: 0, y: 0, z: 0 };
+    setPosition(newPosition);
+    updateObject(selectedObject, { position: newPosition });
+    toast.success(`Centered ${name}`);
+  };
+
+  const handleResetTransform = () => {
+    const defaultRotation = { x: 0, y: 0, z: 0 };
+    const defaultScale = { x: 1, y: 1, z: 1 };
+
+    setRotation(defaultRotation);
+    setScale(defaultScale);
+
+    updateObject(selectedObject, {
+      rotation: defaultRotation,
+      scale: defaultScale,
+    });
+
+    toast.success(`Reset transform for ${name}`);
+  };
+
+  const handleDeleteObject = () => {
+    deleteObject(selectedObject);
+    onClose();
+    toast.success(`Deleted ${name}`);
   };
 
   return (
     <div className="h-full flex flex-col bg-background">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border">
         <div className="flex items-center">
-          {object.type === "cube" ? <Box className="h-4 w-4 mr-2" /> : <CircleIcon className="h-4 w-4 mr-2" />}
+          {object.type === "cube" ? (
+            <Box className="h-4 w-4 mr-2" />
+          ) : (
+            <CircleIcon className="h-4 w-4 mr-2" />
+          )}
           <h3 className="font-medium text-sm">{name}</h3>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -107,9 +170,15 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
 
           <Tabs defaultValue="transform">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="transform" className="text-xs">Transform</TabsTrigger>
-              <TabsTrigger value="material" className="text-xs">Material</TabsTrigger>
-              <TabsTrigger value="options" className="text-xs">Options</TabsTrigger>
+              <TabsTrigger value="transform" className="text-xs">
+                Transform
+              </TabsTrigger>
+              <TabsTrigger value="material" className="text-xs">
+                Material
+              </TabsTrigger>
+              <TabsTrigger value="options" className="text-xs">
+                Options
+              </TabsTrigger>
             </TabsList>
 
             {/* Transform Tab */}
@@ -123,7 +192,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={position.x}
-                      onChange={(e) => handlePositionChange("x", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handlePositionChange("x", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -133,7 +204,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={position.y}
-                      onChange={(e) => handlePositionChange("y", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handlePositionChange("y", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -143,7 +216,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={position.z}
-                      onChange={(e) => handlePositionChange("z", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handlePositionChange("z", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -160,7 +235,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={rotation.x}
-                      onChange={(e) => handleRotationChange("x", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleRotationChange("x", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -170,7 +247,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={rotation.y}
-                      onChange={(e) => handleRotationChange("y", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleRotationChange("y", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -180,7 +259,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={rotation.z}
-                      onChange={(e) => handleRotationChange("z", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleRotationChange("z", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                     />
@@ -197,7 +278,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={scale.x}
-                      onChange={(e) => handleScaleChange("x", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleScaleChange("x", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                       min={0.1}
@@ -208,7 +291,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={scale.y}
-                      onChange={(e) => handleScaleChange("y", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleScaleChange("y", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                       min={0.1}
@@ -219,7 +304,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     <Input
                       type="number"
                       value={scale.z}
-                      onChange={(e) => handleScaleChange("z", parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleScaleChange("z", parseFloat(e.target.value))
+                      }
                       className="h-8"
                       step={0.1}
                       min={0.1}
@@ -241,7 +328,9 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                   />
                   <Input
                     value={material.color}
-                    onChange={(e) => handleMaterialChange("color", e.target.value)}
+                    onChange={(e) =>
+                      handleMaterialChange("color", e.target.value)
+                    }
                     className="h-8 flex-1"
                   />
                 </div>
@@ -257,10 +346,17 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     max="1"
                     step="0.01"
                     value={material.metalness}
-                    onChange={(e) => handleMaterialChange("metalness", parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      handleMaterialChange(
+                        "metalness",
+                        parseFloat(e.target.value)
+                      )
+                    }
                     className="h-8"
                   />
-                  <span className="text-xs w-8 text-right">{material.metalness.toFixed(2)}</span>
+                  <span className="text-xs w-8 text-right">
+                    {material.metalness.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
@@ -273,10 +369,17 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     max="1"
                     step="0.01"
                     value={material.roughness}
-                    onChange={(e) => handleMaterialChange("roughness", parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      handleMaterialChange(
+                        "roughness",
+                        parseFloat(e.target.value)
+                      )
+                    }
                     className="h-8"
                   />
-                  <span className="text-xs w-8 text-right">{material.roughness.toFixed(2)}</span>
+                  <span className="text-xs w-8 text-right">
+                    {material.roughness.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
@@ -289,10 +392,17 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     max="1"
                     step="0.01"
                     value={material.opacity}
-                    onChange={(e) => handleMaterialChange("opacity", parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      handleMaterialChange(
+                        "opacity",
+                        parseFloat(e.target.value)
+                      )
+                    }
                     className="h-8"
                   />
-                  <span className="text-xs w-8 text-right">{material.opacity.toFixed(2)}</span>
+                  <span className="text-xs w-8 text-right">
+                    {material.opacity.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </TabsContent>
@@ -305,7 +415,7 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick={() => toast.success(`Duplicated ${name}`)}
+                  onClick={handleDuplicateObject}
                 >
                   <Copy className="h-4 w-4 mr-2" /> Duplicate Object
                 </Button>
@@ -313,7 +423,7 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick={() => toast.success(`Centered ${name}`)}
+                  onClick={handleCenterObject}
                 >
                   <span className="h-4 w-4 mr-2">⊕</span> Center Object
                 </Button>
@@ -321,7 +431,7 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick={() => toast.success(`Reset Transform for ${name}`)}
+                  onClick={handleResetTransform}
                 >
                   <span className="h-4 w-4 mr-2">↻</span> Reset Transform
                 </Button>
@@ -331,7 +441,7 @@ export default function EditorProperties({ selectedObject, onClose }: EditorProp
                     variant="destructive"
                     size="sm"
                     className="w-full"
-                    onClick={() => toast.success(`Deleted ${name}`)}
+                    onClick={handleDeleteObject}
                   >
                     Delete Object
                   </Button>

@@ -27,7 +27,7 @@ import {
   Scissors,
 } from "lucide-react";
 import { toast } from "sonner";
-import { ObjectType } from "@/lib/store/editor-store";
+import { ObjectType, useEditorStore } from "@/lib/store/editor-store";
 
 export default function EditorSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -35,6 +35,11 @@ export default function EditorSidebar() {
     null
   );
   const [activeTab, setActiveTab] = useState("shapes");
+
+  // Get addObject from store
+  const addObject = useEditorStore((state) => state.addObject);
+  const updateObject = useEditorStore((state) => state.updateObject);
+  const selectedObjectId = useEditorStore((state) => state.selectedObjectId);
 
   // Drag start handler
   const handleDragStart = (
@@ -53,32 +58,57 @@ export default function EditorSidebar() {
     toast.success(`Dragging ${shapeName}`);
   };
 
-  // Add shape handler
-  const handleAddShape = (shapeName: string) => {
-    toast.success(`Added ${shapeName} to scene`);
-    // Logic to add shape to scene would be here
+  // Add shape handler - directly use the store
+  const handleAddShape = (shapeType: ObjectType) => {
+    addObject(shapeType);
+    toast.success(`Added ${shapeType} to scene`);
   };
 
   // Boolean operation handler
   const handleOperation = (operation: string) => {
     setSelectedOperation(operation);
     toast.success(`${operation} operation selected`);
-
-    // In a real app, this would change the mode of the 3D editor
-    // to prepare for a Boolean operation between two selected objects
   };
 
   // Material selection handler
-  const handleMaterialSelect = (materialName: string, color: string) => {
-    toast.success(`${materialName} material selected`);
-    // In a real app, this would apply the material to the selected object
-    // or set it as the default material for new objects
+  const handleMaterialSelect = (
+    materialName: string,
+    color: string,
+    properties?: any
+  ) => {
+    if (selectedObjectId) {
+      // Apply material to selected object
+      updateObject(selectedObjectId, {
+        material: {
+          color,
+          metalness: properties?.metalness || 0.1,
+          roughness: properties?.roughness || 0.2,
+          opacity: properties?.opacity || 1.0,
+        },
+      });
+      toast.success(`Applied ${materialName} to selected object`);
+    } else {
+      toast.info(`Select an object to apply ${materialName} material`);
+    }
   };
 
-  // Layer selection handler
-  const handleLayerSelect = (layerName: string) => {
-    toast.success(`${layerName} selected`);
-    // In a real app, this would change the active layer
+  // Material drag start handler
+  const handleMaterialDrag = (
+    e: React.DragEvent,
+    materialName: string,
+    color: string,
+    properties?: any
+  ) => {
+    e.dataTransfer.setData(
+      "application/material",
+      JSON.stringify({
+        color,
+        name: materialName,
+        ...properties,
+      })
+    );
+    e.dataTransfer.effectAllowed = "copy";
+    toast.success(`Dragging ${materialName} material`);
   };
 
   // Render collapsed sidebar
@@ -198,7 +228,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Cube")}
+                    onClick={() => handleAddShape("cube")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Cube", "cube")}
                   >
@@ -216,7 +246,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Sphere")}
+                    onClick={() => handleAddShape("sphere")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Sphere", "sphere")}
                   >
@@ -236,7 +266,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Cylinder")}
+                    onClick={() => handleAddShape("cylinder")}
                     draggable
                     onDragStart={(e) =>
                       handleDragStart(e, "Cylinder", "cylinder")
@@ -258,7 +288,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Pyramid")}
+                    onClick={() => handleAddShape("pyramid")}
                     draggable
                     onDragStart={(e) =>
                       handleDragStart(e, "Pyramid", "pyramid")
@@ -280,7 +310,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Cone")}
+                    onClick={() => handleAddShape("cone")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Cone", "cone")}
                   >
@@ -298,7 +328,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Torus")}
+                    onClick={() => handleAddShape("torus")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Torus", "torus")}
                   >
@@ -318,7 +348,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Plane")}
+                    onClick={() => handleAddShape("plane")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Plane", "plane")}
                   >
@@ -338,7 +368,7 @@ export default function EditorSidebar() {
                   <Button
                     variant="outline"
                     className="h-14 w-full flex flex-col justify-center items-center gap-1"
-                    onClick={() => handleAddShape("Text")}
+                    onClick={() => handleAddShape("text")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Text", "text")}
                   >
@@ -445,16 +475,9 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-blue-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Blue", "#3b82f6")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "#3b82f6",
-                    name: "Blue Material",
-                  })
-                );
-                toast.success("Dragging Blue material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Blue Material", "#3b82f6")
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Blue</span>
@@ -464,16 +487,9 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-red-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Red", "#ef4444")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "#ef4444",
-                    name: "Red Material",
-                  })
-                );
-                toast.success("Dragging Red material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Red Material", "#ef4444")
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Red</span>
@@ -483,16 +499,9 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-green-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Green", "#22c55e")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "#22c55e",
-                    name: "Green Material",
-                  })
-                );
-                toast.success("Dragging Green material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Green Material", "#22c55e")
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Green</span>
@@ -502,16 +511,9 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-yellow-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Yellow", "#eab308")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "#eab308",
-                    name: "Yellow Material",
-                  })
-                );
-                toast.success("Dragging Yellow material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Yellow Material", "#eab308")
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Yellow</span>
@@ -521,16 +523,9 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-purple-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Purple", "#a855f7")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "#a855f7",
-                    name: "Purple Material",
-                  })
-                );
-                toast.success("Dragging Purple material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Purple Material", "#a855f7")
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Purple</span>
@@ -540,18 +535,12 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-gradient-to-r from-gray-300 to-gray-100 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Metal", "metal")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "metal",
-                    name: "Metal Material",
-                    metalness: 0.8,
-                    roughness: 0.2,
-                  })
-                );
-                toast.success("Dragging Metal material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Metal Material", "metal", {
+                  metalness: 0.8,
+                  roughness: 0.2,
+                })
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Metal</span>
@@ -561,18 +550,12 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-gradient-to-r from-blue-300 to-blue-100 opacity-70 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Glass", "glass")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "glass",
-                    name: "Glass Material",
-                    opacity: 0.7,
-                    transparent: true,
-                  })
-                );
-                toast.success("Dragging Glass material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Glass Material", "glass", {
+                  opacity: 0.7,
+                  transparent: true,
+                })
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Glass</span>
@@ -582,17 +565,11 @@ export default function EditorSidebar() {
               className="rounded-md h-14 bg-gradient-to-r from-amber-700 to-amber-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Wood", "wood")}
               draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "application/material",
-                  JSON.stringify({
-                    color: "wood",
-                    name: "Wood Material",
-                    roughness: 0.8,
-                  })
-                );
-                toast.success("Dragging Wood material");
-              }}
+              onDragStart={(e) =>
+                handleMaterialDrag(e, "Wood Material", "wood", {
+                  roughness: 0.8,
+                })
+              }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                 <span className="text-white text-xs font-medium">Wood</span>

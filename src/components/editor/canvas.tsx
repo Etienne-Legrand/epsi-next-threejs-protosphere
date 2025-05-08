@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense, useCallback } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -14,7 +14,7 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import { toast } from "sonner";
-import { ObjectType } from "@/lib/store/editor-store";
+import { ObjectType, useEditorStore } from "@/lib/store/editor-store";
 
 interface EditorCanvasProps {
   selectedObject: string | null;
@@ -26,40 +26,50 @@ interface DragDropData {
   name: string;
 }
 
-// Sample scene objects
-const defaultObjects = [
-  { id: "cube-1", type: "cube", position: [0, 0, 0], color: "#4c6ef5" },
-  { id: "sphere-1", type: "sphere", position: [2, 0, 0], color: "#ae3ec9" },
-];
-
 // Main Scene Component
 function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
   const { camera, gl } = useThree();
-  const [objects, setObjects] = useState(defaultObjects);
   const selectedRef = useRef<THREE.Mesh | null>(null);
-  const [transformMode, setTransformMode] = useState<
-    "translate" | "rotate" | "scale"
-  >("translate");
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const objectsRef = useRef<{ [key: string]: THREE.Mesh }>({});
+
+  // Get data from Zustand store
+  const {
+    scene,
+    selectObject,
+    addObject,
+    updateObject,
+    activeTool,
+    setActiveTool,
+  } = useEditorStore();
+
+  // Transform mode mapping from store's activeTool
+  const transformMode =
+    activeTool === "move"
+      ? "translate"
+      : activeTool === "rotate"
+      ? "rotate"
+      : activeTool === "scale"
+      ? "scale"
+      : undefined;
 
   // Handle object selection
-  const handleSelect = (id: string, e: THREE.Event) => {
-    e.stopPropagation();
-    setSelectedObject(id);
-    toast.success(`Selected ${id}`);
-  };
+  const handleSelect = useCallback(
+    (id: string, e: THREE.Event) => {
+      e.stopPropagation();
+      selectObject(id);
+      setSelectedObject(id);
+      toast.success(`Selected ${id}`);
+    },
+    [selectObject, setSelectedObject]
+  );
 
   // Handle canvas click (deselection)
-  const handleCanvasClick = () => {
+  const handleCanvasClick = useCallback(() => {
     if (selectedObject) {
+      selectObject(null);
       setSelectedObject(null);
     }
-  };
-
-  // Set up the transform controls for the selected object
-  useEffect(() => {
-    selectedRef.current = null;
-  }, [selectedObject]);
+  }, [selectedObject, selectObject, setSelectedObject]);
 
   // Key event listener to change transform mode
   useEffect(() => {
@@ -67,15 +77,15 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       if (selectedObject) {
         switch (e.key.toLowerCase()) {
           case "g":
-            setTransformMode("translate");
+            setActiveTool("move");
             toast.success("Move tool activated");
             break;
           case "r":
-            setTransformMode("rotate");
+            setActiveTool("rotate");
             toast.success("Rotate tool activated");
             break;
           case "s":
-            setTransformMode("scale");
+            setActiveTool("scale");
             toast.success("Scale tool activated");
             break;
         }
@@ -86,35 +96,51 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedObject]);
+  }, [selectedObject, setActiveTool]);
 
-  // Add a new object to the scene
-  const addObject = (type: ObjectType, position = [0, 0, 0]) => {
-    const id = `${type}-${Math.random().toString(36).substring(2, 9)}`;
-    const colors = {
-      cube: "#4c6ef5",
-      sphere: "#ae3ec9",
-      cylinder: "#22c55e",
-      cone: "#f97316",
-      torus: "#a855f7",
-      plane: "#64748b",
-      pyramid: "#fbbf24",
-      text: "#ec4899",
-    };
+  // Handle transform changes
+  const handleTransformChange = (e: any) => {
+    if (selectedObject && objectsRef.current[selectedObject]) {
+      const mesh = objectsRef.current[selectedObject];
 
-    const newObject = {
-      id,
-      type,
-      position,
-      color: colors[type] || "#ffffff",
-    };
+      // Update position in the store (convert Vector3 to object)
+      updateObject(selectedObject, {
+        position: {
+          x: mesh.position.x,
+          y: mesh.position.y,
+          z: mesh.position.z,
+        },
+        rotation: {
+          x: mesh.rotation.x,
+          y: mesh.rotation.y,
+          z: mesh.rotation.z,
+        },
+        scale: {
+          x: mesh.scale.x,
+          y: mesh.scale.y,
+          z: mesh.scale.z,
+        },
+      });
+    }
+  };
 
-    setObjects((prev) => [...prev, newObject]);
-    setSelectedObject(id);
+  // Handle dropping objects
+  const handleObjectDrop = (
+    type: ObjectType,
+    position: [number, number, number]
+  ) => {
+    addObject(type);
     toast.success(
-      `Added ${type} at position (${position[0]}, ${position[1]}, ${position[2]})`
+      `Added ${type} at position (${position[0].toFixed(
+        2
+      )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
     );
   };
+
+  // Extract selected object
+  const selectedObjectRef = selectedObject
+    ? objectsRef.current[selectedObject]
+    : null;
 
   return (
     <>
@@ -142,12 +168,17 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       />
 
       {/* The 3D objects */}
-      {objects.map((object) => (
+      {scene.objects.map((object) => (
         <mesh
           key={object.id}
-          position={object.position as [number, number, number]}
+          position={[object.position.x, object.position.y, object.position.z]}
+          rotation={[object.rotation.x, object.rotation.y, object.rotation.z]}
+          scale={[object.scale.x, object.scale.y, object.scale.z]}
           onClick={(e) => handleSelect(object.id, e)}
-          ref={selectedObject === object.id ? selectedRef : undefined}
+          ref={(mesh) => {
+            if (mesh) objectsRef.current[object.id] = mesh;
+            if (selectedObject === object.id) selectedRef.current = mesh;
+          }}
           castShadow
           receiveShadow
         >
@@ -162,11 +193,19 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
           )}
           {object.type === "plane" && <planeGeometry args={[1.5, 1.5]} />}
           {object.type === "pyramid" && <coneGeometry args={[0.7, 1.5, 4]} />}
+          {object.type === "text" && (
+            <mesh>
+              {/* Text is a placeholder, can be replaced with proper Text component */}
+              <boxGeometry args={[1, 0.5, 0.1]} />
+            </mesh>
+          )}
 
           <meshStandardMaterial
-            color={object.color}
-            metalness={0.1}
-            roughness={0.2}
+            color={object.material.color}
+            metalness={object.material.metalness}
+            roughness={object.material.roughness}
+            transparent={object.material.opacity < 1}
+            opacity={object.material.opacity}
             emissive={selectedObject === object.id ? "#333333" : "#000000"}
           />
 
@@ -182,7 +221,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
             }`}
           >
             <div className="px-2 py-1 rounded-md bg-background border border-border text-xs font-mono">
-              {object.id}
+              {object.name}
             </div>
           </Html>
         </mesh>
@@ -200,12 +239,14 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       </mesh>
 
       {/* Transform controls for selected object */}
-      {selectedObject && selectedRef.current && (
+      {selectedObject && selectedObjectRef && transformMode && (
         <TransformControls
-          object={selectedRef.current}
+          object={selectedObjectRef}
           mode={transformMode}
-          onMouseUp={() => {
+          onObjectChange={handleTransformChange}
+          onMouseUp={(e) => {
             toast.success(`Applied ${transformMode} transformation`);
+            handleTransformChange(e);
           }}
         />
       )}
@@ -264,6 +305,31 @@ export default function EditorCanvas({
 }: EditorCanvasProps) {
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const addObject = useEditorStore((state) => state.addObject);
+
+  // Convert screen coordinates to world coordinates
+  const screenToWorld = (
+    e: React.DragEvent,
+    camera: THREE.Camera,
+    targetZ = 0
+  ) => {
+    if (!canvasRef.current) return [0, 0, 0];
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    // Create a ray from the camera through the mouse position
+    const vector = new THREE.Vector3(x, y, 0.5);
+    vector.unproject(camera);
+
+    // Calculate where the ray intersects the target Z plane
+    const dir = vector.sub(camera.position).normalize();
+    const distance = (targetZ - camera.position.z) / dir.z;
+    const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+
+    return [pos.x, targetZ, pos.z] as [number, number, number];
+  };
 
   // Handle drag & drop
   const handleDragOver = (e: React.DragEvent) => {
@@ -279,19 +345,25 @@ export default function EditorCanvas({
       const shapeData = e.dataTransfer.getData("application/reactflow");
       if (shapeData) {
         const data = JSON.parse(shapeData) as DragDropData;
-        // Add the shape at the drop position
-        // We would need to convert screen coordinates to world coordinates
-        // For simplicity, we'll just add the object at a random position near the center
 
-        const randomOffset = () => (Math.random() - 0.5) * 3;
-        const position: [number, number, number] = [
-          randomOffset(),
-          0.5, // Lift slightly above ground
-          randomOffset(),
-        ];
+        // Position where to add the new object
+        let position: [number, number, number] = [0, 0.5, 0]; // Default position
 
-        // Update the scene with the new object
-        // In a real app, we would dispatch to our store
+        // Try to get the camera from the canvas
+        const canvas = document.querySelector("canvas");
+        if (canvas && window._DREI_CAMERA) {
+          // Use the camera to convert screen to world coordinates
+          position = screenToWorld(e, window._DREI_CAMERA, 0.5);
+        } else {
+          // Fallback to random offset if camera is not available
+          const randomOffset = () => (Math.random() - 0.5) * 3;
+          position = [randomOffset(), 0.5, randomOffset()];
+        }
+
+        // Add the object to the Zustand store
+        addObject(data.type);
+
+        // Position will be handled by the store's addObject function
         toast.success(
           `Added ${data.name} at position (${position[0].toFixed(
             2
@@ -303,6 +375,15 @@ export default function EditorCanvas({
       const materialData = e.dataTransfer.getData("application/material");
       if (materialData && selectedObject) {
         const material = JSON.parse(materialData);
+        // Update material in store
+        useEditorStore.getState().updateObject(selectedObject, {
+          material: {
+            color: material.color,
+            metalness: material.metalness || 0.1,
+            roughness: material.roughness || 0.2,
+            opacity: material.opacity || 1.0,
+          },
+        });
         toast.success(`Applied ${material.name} to ${selectedObject}`);
       }
     } catch (error) {
@@ -311,9 +392,20 @@ export default function EditorCanvas({
     }
   };
 
+  // Store camera reference globally for coordinate conversion
   useEffect(() => {
     setMounted(true);
+    return () => {
+      if (window._DREI_CAMERA) delete window._DREI_CAMERA;
+    };
   }, []);
+
+  // Store the camera globally
+  const storeCamera = (state: any) => {
+    if (state?.camera) {
+      window._DREI_CAMERA = state.camera;
+    }
+  };
 
   if (!mounted) {
     return <CanvasLoading />;
@@ -326,7 +418,7 @@ export default function EditorCanvas({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <Canvas shadows>
+      <Canvas shadows onCreated={storeCamera}>
         <Suspense fallback={<CanvasLoading />}>
           <Scene
             selectedObject={selectedObject}
@@ -336,4 +428,11 @@ export default function EditorCanvas({
       </Canvas>
     </div>
   );
+}
+
+// Add this to the global Window interface
+declare global {
+  interface Window {
+    _DREI_CAMERA?: THREE.Camera;
+  }
 }

@@ -8,39 +8,63 @@ import EditorCanvas from "@/components/editor/canvas";
 import EditorProperties from "@/components/editor/properties";
 import EditorToolbar from "@/components/editor/toolbar";
 import { toast } from "sonner";
+import { useEditorStore } from "@/lib/store/editor-store";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectId = searchParams.get("project");
   const templateId = searchParams.get("template");
 
-  const [selectedObject, setSelectedObject] = useState<string | null>(null);
+  // Get state and actions from the store
+  const {
+    selectedObjectId,
+    selectObject,
+    setProjectId,
+    setProjectName,
+    isCollaborating,
+    startCollaboration,
+    stopCollaboration,
+  } = useEditorStore();
+
   const [showProperties, setShowProperties] = useState(true);
-  const [isCollaborating, setIsCollaborating] = useState(false);
 
   // Load project or template data
   useEffect(() => {
     if (projectId) {
+      setProjectId(projectId);
+      setProjectName(`Project ${projectId}`);
       toast.success(`Project loaded: Project ${projectId}`);
     } else if (templateId) {
+      setProjectId(templateId);
+      setProjectName(`Template ${templateId}`);
       toast.success(`Template loaded: Template ${templateId}`);
     } else {
+      setProjectId(null);
+      setProjectName("Untitled Project");
       toast.success("New blank project created");
     }
-  }, [projectId, templateId]);
+  }, [projectId, templateId, setProjectId, setProjectName]);
+
+  // Set selected object in local state and store
+  const handleSelectObject = (id: string | null) => {
+    selectObject(id);
+  };
+
+  // Toggle collaboration
+  const handleToggleCollaboration = (value: boolean) => {
+    if (value) {
+      startCollaboration();
+    } else {
+      stopCollaboration();
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden">
       <EditorHeader
-        projectName={
-          projectId
-            ? `Project ${projectId}`
-            : templateId
-            ? `Template ${templateId}`
-            : "Untitled Project"
-        }
+        projectName={useEditorStore.getState().projectName}
         isCollaborating={isCollaborating}
-        setIsCollaborating={setIsCollaborating}
+        setIsCollaborating={handleToggleCollaboration}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -48,22 +72,22 @@ export default function EditorPage() {
 
         <div className="flex-1 flex flex-col">
           <EditorToolbar
-            selectedObject={selectedObject}
-            setSelectedObject={setSelectedObject}
+            selectedObject={selectedObjectId}
+            setSelectedObject={handleSelectObject}
           />
 
           <div className="flex-1 flex overflow-hidden">
             <div className="flex-1 relative">
               <EditorCanvas
-                selectedObject={selectedObject}
-                setSelectedObject={setSelectedObject}
+                selectedObject={selectedObjectId}
+                setSelectedObject={handleSelectObject}
               />
             </div>
 
-            {showProperties && selectedObject && (
+            {showProperties && selectedObjectId && (
               <div className="w-80 border-l border-border overflow-y-auto">
                 <EditorProperties
-                  selectedObject={selectedObject}
+                  selectedObject={selectedObjectId}
                   onClose={() => setShowProperties(false)}
                 />
               </div>
