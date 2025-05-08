@@ -18,7 +18,6 @@ import {
   AlignCenter,
   CornerUpLeft,
   CornerUpRight,
-  Camera,
   Clipboard,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -99,13 +98,6 @@ export default function EditorToolbar({
   const handleAlign = () => {
     if (!selectedObject) return;
     toast.success(`Opening alignment options for ${selectedObject}`);
-  };
-
-  // Handle camera operations
-  const handleCameraView = () => {
-    const views = ["Top", "Front", "Side", "Perspective"];
-    const randomView = views[Math.floor(Math.random() * views.length)];
-    toast.success(`Changed to ${randomView} view`);
   };
 
   return (
@@ -299,26 +291,6 @@ export default function EditorToolbar({
               </Button>
             </TooltipTrigger>
             <TooltipContent>Redo (Ctrl+Y)</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-
-      <div className="h-6 w-px bg-border mr-2"></div>
-
-      <div className="flex items-center space-x-1">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={handleCameraView}
-              >
-                <Camera className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Camera Views</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>

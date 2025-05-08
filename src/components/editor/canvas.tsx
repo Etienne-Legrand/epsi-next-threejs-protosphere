@@ -11,6 +11,8 @@ import {
   PerspectiveCamera,
   Html,
   useContextBridge,
+  GizmoHelper,
+  GizmoViewport,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { toast } from "sonner";
@@ -326,6 +328,14 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
         minDistance={2}
         maxDistance={20}
       />
+
+      {/* Axes helper gizmo (similaire à l'image) */}
+      <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+        <GizmoViewport
+          axisColors={["red", "green", "blue"]}
+          labelColor="white"
+        />
+      </GizmoHelper>
     </>
   );
 }
