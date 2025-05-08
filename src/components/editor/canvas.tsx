@@ -46,6 +46,8 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     deleteObject,
     undo,
     redo,
+    startTransformation,
+    endTransformation,
   } = useEditorStore();
 
   // Transform mode mapping from store's activeTool
@@ -297,9 +299,17 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
           object={selectedObjectRef}
           mode={transformMode}
           onObjectChange={handleTransformChange}
+          onMouseDown={() => {
+            // Capture l'état initial avant la transformation
+            startTransformation(selectedObject);
+          }}
           onMouseUp={(e) => {
+            // Enregistre l'état final après la transformation
+            endTransformation(
+              selectedObject,
+              `Applied ${transformMode} transformation`
+            );
             toast.success(`Applied ${transformMode} transformation`);
-            handleTransformChange(e);
           }}
         />
       )}

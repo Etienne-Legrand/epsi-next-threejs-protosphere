@@ -67,6 +67,10 @@ interface EditorState {
   historyIndex: number;
   maxHistorySize: number;
 
+  // État de la transformation en cours
+  isTransforming: boolean;
+  cachedTransformState: Object3D | null;
+
   // Collaboration
   isCollaborating: boolean;
   collaborators: { id: string; name: string; color: string }[];
@@ -100,6 +104,10 @@ interface EditorState {
 
   startCollaboration: () => void;
   stopCollaboration: () => void;
+
+  // Transformations avec historique
+  startTransformation: (objectId: string) => void;
+  endTransformation: (objectId: string, description: string) => void;
 }
 
 // Generate a simple ID
@@ -157,6 +165,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   history: [],
   historyIndex: -1,
   maxHistorySize: 50,
+
+  // État de la transformation en cours
+  isTransforming: false,
+  cachedTransformState: null,
 
   // Collaboration
   isCollaborating: false,
@@ -216,6 +228,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   updateObject: (id, updates) => {
+    // Si nous sommes en mode transformation, ne pas sauvegarder dans l'historique
+    const isTransforming = get().isTransforming;
+
     set((state) => {
       const objectIndex = state.scene.objects.findIndex((obj) => obj.id === id);
       if (objectIndex === -1) return state;
@@ -236,8 +251,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       };
     });
 
-    // Ajout à l'historique après mise à jour
-    get().saveToHistory(`Updated ${id}`);
+    // Sauvegarder dans l'historique uniquement si nous ne sommes pas en mode transformation
+    if (!isTransforming) {
+      get().saveToHistory(`Updated ${id}`);
+    }
   },
 
   deleteObject: (id) => {
@@ -530,5 +547,29 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     });
 
     toast.success("Collaboration stopped");
+  },
+
+  // Nouvelles fonctions pour gérer les transformations avec historique
+  startTransformation: (objectId) => {
+    const object = get().scene.objects.find((obj) => obj.id === objectId);
+    if (!object) return;
+
+    set({
+      isTransforming: true,
+      cachedTransformState: JSON.parse(JSON.stringify(object)),
+    });
+  },
+
+  endTransformation: (objectId, description) => {
+    const { cachedTransformState } = get();
+    if (!cachedTransformState) {
+      set({ isTransforming: false });
+      return;
+    }
+
+    set({ isTransforming: false, cachedTransformState: null });
+
+    // Enregistrer cette transformation dans l'historique maintenant qu'elle est terminée
+    get().saveToHistory(description);
   },
 }));
