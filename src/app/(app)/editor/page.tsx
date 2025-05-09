@@ -55,6 +55,7 @@ export default function EditorPage() {
 
   // Set selected object in local state and store
   const handleSelectObject = (id: string | null) => {
+    setShowProperties(!!id); // Show properties panel if an object is selected
     selectObject(id);
   };
 
@@ -78,22 +79,20 @@ export default function EditorPage() {
       <div className="flex flex-1 overflow-hidden">
         <EditorSidebar />
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col relative overflow-hidden">
           <EditorToolbar
             selectedObject={selectedObjectId}
             setSelectedObject={handleSelectObject}
           />
 
-          <div className="flex-1 flex overflow-hidden">
-            <div className="flex-1 relative">
-              <EditorCanvas
-                selectedObject={selectedObjectId}
-                setSelectedObject={handleSelectObject}
-              />
-            </div>
+          <div className="flex-1 relative">
+            <EditorCanvas
+              selectedObject={selectedObjectId}
+              setSelectedObject={handleSelectObject}
+            />
 
             {showProperties && selectedObjectId && (
-              <div className="w-80 border-l border-slate-700 overflow-y-auto bg-slate-900">
+              <div className="absolute top-0 right-0 w-80 h-full z-20 border-l border-slate-700 overflow-y-auto bg-slate-900">
                 <EditorProperties
                   selectedObject={selectedObjectId}
                   onClose={() => setShowProperties(false)}
