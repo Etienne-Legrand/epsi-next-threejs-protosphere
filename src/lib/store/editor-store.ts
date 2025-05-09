@@ -490,7 +490,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     // Create a WebRTC provider (for P2P collaboration)
     // In a real app, you might want to use WebSocketProvider with a server instead
     try {
-      const provider = new WebrtcProvider(`modern-3d-studio-${roomId}`, doc);
+      const provider = new WebrtcProvider(`protosphere-${roomId}`, doc);
 
       // Set up awareness (to show who is connected)
       const awareness = provider.awareness;
