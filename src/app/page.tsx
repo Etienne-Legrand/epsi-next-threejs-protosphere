@@ -14,19 +14,34 @@ export default function LandingPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
-            <span className="text-xl font-bold">Modern 3D Studio</span>
+            <span className="text-xl font-bold">Protosphere</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</Link>
-            <Link href="#examples" className="text-muted-foreground hover:text-foreground transition-colors">Examples</Link>
-            <Link href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
+            <Link
+              href="#features"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Fonctionnalités
+            </Link>
+            <Link
+              href="#examples"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Exemples
+            </Link>
+            <Link
+              href="#pricing"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Prix
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
             <Button variant="outline" asChild>
-              <Link href="/login">Login</Link>
+              <Link href="/login">Connexion</Link>
             </Button>
             <Button asChild>
-              <Link href="/dashboard">Get Started</Link>
+              <Link href="/dashboard">Commencer</Link>
             </Button>
           </div>
         </div>

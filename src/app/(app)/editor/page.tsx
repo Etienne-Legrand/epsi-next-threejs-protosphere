@@ -33,23 +33,23 @@ export default function EditorPage() {
   useEffect(() => {
     if (projectId) {
       setProjectId(projectId);
-      setProjectName(`Project ${projectId}`);
-      toast.success(`Project loaded: Project ${projectId}`);
+      setProjectName(`Projet ${projectId}`);
+      toast.success(`Projet chargé : Projet ${projectId}`);
     } else if (templateId) {
       setProjectId(templateId);
-      setProjectName(`Template ${templateId}`);
-      toast.success(`Template loaded: Template ${templateId}`);
+      setProjectName(`Modèle ${templateId}`);
+      toast.success(`Modèle chargé : Modèle ${templateId}`);
     } else {
       setProjectId(null);
-      setProjectName("Untitled Project");
-      toast.success("New blank project created");
+      setProjectName("Projet sans titre");
+      toast.success("Nouveau projet vide créé");
     }
 
     // Initialiser l'historique avec l'état actuel comme point de départ
     // Important de le faire après le chargement du projet pour capturer l'état initial
     setTimeout(() => {
       clearHistory();
-      toast.success("Undo/Redo history initialized");
+      toast.success("Historique annuler/refaire initialisé");
     }, 500); // Petit délai pour s'assurer que tout est bien chargé
   }, [projectId, templateId, setProjectId, setProjectName, clearHistory]);
 

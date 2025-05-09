@@ -3,12 +3,28 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  Save, Share2, ArrowLeft, Users, MoreVertical,
-  Download, GitFork, Settings, ExternalLink, User
+  Save,
+  Share2,
+  ArrowLeft,
+  Users,
+  MoreVertical,
+  Download,
+  GitFork,
+  Settings,
+  ExternalLink,
+  User,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,9 +32,14 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "sonner";
 
 interface EditorHeaderProps {
@@ -27,7 +48,11 @@ interface EditorHeaderProps {
   setIsCollaborating: (value: boolean) => void;
 }
 
-export default function EditorHeader({ projectName, isCollaborating, setIsCollaborating }: EditorHeaderProps) {
+export default function EditorHeader({
+  projectName,
+  isCollaborating,
+  setIsCollaborating,
+}: EditorHeaderProps) {
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState(projectName);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,23 +62,25 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
     // Simulate saving
     setTimeout(() => {
       setIsSaving(false);
-      toast.success("Project saved successfully");
+      toast.success("Projet enregistré avec succès");
     }, 1000);
   };
 
   const handleRename = () => {
     // Handle project rename
-    toast.success(`Project renamed to ${newProjectName}`);
+    toast.success(`Projet renommé en ${newProjectName}`);
     setIsRenameDialogOpen(false);
   };
 
   const handleExport = (format: string) => {
-    toast.success(`Exporting as ${format}...`);
+    toast.success(`Exportation au format ${format}...`);
   };
 
   const handleStartCollaboration = () => {
     setIsCollaborating(true);
-    toast.success("Collaboration mode enabled - Share the link to collaborate");
+    toast.success(
+      "Mode collaboration activé - Partagez le lien pour collaborer"
+    );
   };
 
   return (
@@ -69,35 +96,45 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
                   </Link>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Back to Dashboard</TooltipContent>
+              <TooltipContent>Retour au Tableau de bord</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
           <div className="h-6 w-6 rounded-md bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
 
           <div className="flex items-center">
-            <Dialog open={isRenameDialogOpen} onOpenChange={setIsRenameDialogOpen}>
+            <Dialog
+              open={isRenameDialogOpen}
+              onOpenChange={setIsRenameDialogOpen}
+            >
               <DialogTrigger asChild>
                 <Button variant="ghost" className="h-auto py-1.5 px-2">
-                  <span className="font-medium truncate max-w-[180px]">{projectName}</span>
+                  <span className="font-medium truncate max-w-[180px]">
+                    {projectName}
+                  </span>
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Rename Project</DialogTitle>
+                  <DialogTitle>Renommer le Projet</DialogTitle>
                   <DialogDescription>
-                    Enter a new name for your project
+                    Entrez un nouveau nom pour votre projet
                   </DialogDescription>
                 </DialogHeader>
                 <Input
                   value={newProjectName}
                   onChange={(e) => setNewProjectName(e.target.value)}
-                  placeholder="Project name"
+                  placeholder="Nom du projet"
                   className="mt-4"
                 />
                 <DialogFooter className="mt-4">
-                  <Button variant="outline" onClick={() => setIsRenameDialogOpen(false)}>Cancel</Button>
-                  <Button onClick={handleRename}>Rename</Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsRenameDialogOpen(false)}
+                  >
+                    Annuler
+                  </Button>
+                  <Button onClick={handleRename}>Renommer</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -108,26 +145,35 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
           {isCollaborating && (
             <div className="flex items-center gap-1.5 mr-2">
               <Avatar className="h-6 w-6">
-                <AvatarImage src="/avatars/user.jpg" alt="User" />
-                <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
+                <AvatarImage src="/avatars/user.jpg" alt="Utilisateur" />
+                <AvatarFallback>
+                  <User className="h-3 w-3" />
+                </AvatarFallback>
               </Avatar>
               <Avatar className="h-6 w-6">
                 <AvatarImage src="/avatars/sarah.jpg" alt="Sarah" />
                 <AvatarFallback>SJ</AvatarFallback>
               </Avatar>
-              <span className="text-sm text-muted-foreground">2 users</span>
+              <span className="text-sm text-muted-foreground">
+                2 utilisateurs
+              </span>
             </div>
           )}
 
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isSaving}
+                >
                   <Save className="h-4 w-4 mr-2" />
-                  {isSaving ? "Saving..." : "Save"}
+                  {isSaving ? "Enregistrement..." : "Enregistrer"}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Save Project (Ctrl+S)</TooltipContent>
+              <TooltipContent>Enregistrer le Projet (Ctrl+S)</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -135,12 +181,18 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="sm" onClick={handleStartCollaboration}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleStartCollaboration}
+                  >
                     <Users className="h-4 w-4 mr-2" />
-                    Collaborate
+                    Collaborer
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Start Collaboration Session</TooltipContent>
+                <TooltipContent>
+                  Démarrer une Session de Collaboration
+                </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           ) : (
@@ -149,10 +201,12 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
                 <TooltipTrigger asChild>
                   <Button variant="outline" size="sm">
                     <Share2 className="h-4 w-4 mr-2" />
-                    Share
+                    Partager
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Share Collaboration Link</TooltipContent>
+                <TooltipContent>
+                  Partager le Lien de Collaboration
+                </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           )}
@@ -167,36 +221,36 @@ export default function EditorHeader({ projectName, isCollaborating, setIsCollab
                     </Button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent>More Options</TooltipContent>
+                <TooltipContent>Plus d'Options</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Project Options</DropdownMenuLabel>
+              <DropdownMenuLabel>Options du Projet</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => handleExport("STL")}>
                 <Download className="h-4 w-4 mr-2" />
-                Export as STL
+                Exporter en STL
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport("OBJ")}>
                 <Download className="h-4 w-4 mr-2" />
-                Export as OBJ
+                Exporter en OBJ
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport("GLTF")}>
                 <Download className="h-4 w-4 mr-2" />
-                Export as GLTF
+                Exporter en GLTF
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <GitFork className="h-4 w-4 mr-2" />
-                Duplicate Project
+                Dupliquer le Projet
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="h-4 w-4 mr-2" />
-                Project Settings
+                Paramètres du Projet
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Open in New Window
+                Ouvrir dans une Nouvelle Fenêtre
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

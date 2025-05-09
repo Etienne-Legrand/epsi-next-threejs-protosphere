@@ -59,8 +59,8 @@ export default function EditorProperties({
   if (!object) {
     return (
       <div className="h-full flex flex-col items-center justify-center">
-        <p>Object not found</p>
-        <Button onClick={onClose}>Close</Button>
+        <p>Objet non trouvé</p>
+        <Button onClick={onClose}>Fermer</Button>
       </div>
     );
   }
@@ -70,21 +70,21 @@ export default function EditorProperties({
     const newPosition = { ...position, [axis]: value };
     setPosition(newPosition);
     updateObject(selectedObject, { position: newPosition });
-    toast.success(`Updated ${axis} position to ${value}`);
+    toast.success(`Position ${axis} mise à jour à ${value}`);
   };
 
   const handleRotationChange = (axis: keyof typeof rotation, value: number) => {
     const newRotation = { ...rotation, [axis]: value };
     setRotation(newRotation);
     updateObject(selectedObject, { rotation: newRotation });
-    toast.success(`Updated ${axis} rotation to ${value}`);
+    toast.success(`Rotation ${axis} mise à jour à ${value}`);
   };
 
   const handleScaleChange = (axis: keyof typeof scale, value: number) => {
     const newScale = { ...scale, [axis]: value };
     setScale(newScale);
     updateObject(selectedObject, { scale: newScale });
-    toast.success(`Updated ${axis} scale to ${value}`);
+    toast.success(`Échelle ${axis} mise à jour à ${value}`);
   };
 
   const handleMaterialChange = (
@@ -96,13 +96,13 @@ export default function EditorProperties({
     updateObject(selectedObject, {
       material: newMaterial,
     });
-    toast.success(`Updated material ${property}`);
+    toast.success(`Matériau ${property} mis à jour`);
   };
 
   const handleNameChange = (value: string) => {
     setName(value);
     updateObject(selectedObject, { name: value });
-    toast.success(`Renamed to ${value}`);
+    toast.success(`Renommé en ${value}`);
   };
 
   // Handle object actions
@@ -114,7 +114,7 @@ export default function EditorProperties({
     const newPosition = { x: 0, y: 0, z: 0 };
     setPosition(newPosition);
     updateObject(selectedObject, { position: newPosition });
-    toast.success(`Centered ${name}`);
+    toast.success(`${name} centré`);
   };
 
   const handleResetTransform = () => {
@@ -129,13 +129,13 @@ export default function EditorProperties({
       scale: defaultScale,
     });
 
-    toast.success(`Reset transform for ${name}`);
+    toast.success(`Transformation réinitialisée pour ${name}`);
   };
 
   const handleDeleteObject = () => {
     deleteObject(selectedObject);
     onClose();
-    toast.success(`Deleted ${name}`);
+    toast.success(`${name} supprimé`);
   };
 
   return (
@@ -159,7 +159,7 @@ export default function EditorProperties({
           {/* Object Name */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-medium">Name</label>
+              <label className="text-xs font-medium">Nom</label>
             </div>
             <Input
               value={name}
@@ -171,10 +171,10 @@ export default function EditorProperties({
           <Tabs defaultValue="transform">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="transform" className="text-xs">
-                Transform
+                Transformation
               </TabsTrigger>
               <TabsTrigger value="material" className="text-xs">
-                Material
+                Matériau
               </TabsTrigger>
               <TabsTrigger value="options" className="text-xs">
                 Options
@@ -271,7 +271,7 @@ export default function EditorProperties({
 
               {/* Scale Control */}
               <div className="space-y-2">
-                <label className="text-xs font-medium">Scale</label>
+                <label className="text-xs font-medium">Échelle</label>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="space-y-1">
                     <label className="text-xs text-muted-foreground">X</label>
@@ -320,7 +320,7 @@ export default function EditorProperties({
             <TabsContent value="material" className="space-y-5 pt-4">
               {/* Color Picker */}
               <div className="space-y-2">
-                <label className="text-xs font-medium">Color</label>
+                <label className="text-xs font-medium">Couleur</label>
                 <div className="flex items-center gap-3">
                   <div
                     className="w-8 h-8 rounded-md border border-border cursor-pointer"
@@ -338,7 +338,7 @@ export default function EditorProperties({
 
               {/* Material Properties */}
               <div className="space-y-2">
-                <label className="text-xs font-medium">Metalness</label>
+                <label className="text-xs font-medium">Métallique</label>
                 <div className="flex items-center gap-2">
                   <Input
                     type="range"
@@ -361,7 +361,7 @@ export default function EditorProperties({
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium">Roughness</label>
+                <label className="text-xs font-medium">Rugosité</label>
                 <div className="flex items-center gap-2">
                   <Input
                     type="range"
@@ -384,7 +384,7 @@ export default function EditorProperties({
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium">Opacity</label>
+                <label className="text-xs font-medium">Opacité</label>
                 <div className="flex items-center gap-2">
                   <Input
                     type="range"
@@ -410,14 +410,16 @@ export default function EditorProperties({
             {/* Options Tab */}
             <TabsContent value="options" className="pt-4">
               <div className="space-y-3">
-                <div className="text-xs font-medium pb-2">Object Actions</div>
+                <div className="text-xs font-medium pb-2">
+                  Actions sur l'objet
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
                   onClick={handleDuplicateObject}
                 >
-                  <Copy className="h-4 w-4 mr-2" /> Duplicate Object
+                  <Copy className="h-4 w-4 mr-2" /> Dupliquer l'objet
                 </Button>
                 <Button
                   variant="outline"
@@ -425,7 +427,7 @@ export default function EditorProperties({
                   className="w-full justify-start"
                   onClick={handleCenterObject}
                 >
-                  <span className="h-4 w-4 mr-2">⊕</span> Center Object
+                  <span className="h-4 w-4 mr-2">⊕</span> Centrer l'objet
                 </Button>
                 <Button
                   variant="outline"
@@ -433,7 +435,8 @@ export default function EditorProperties({
                   className="w-full justify-start"
                   onClick={handleResetTransform}
                 >
-                  <span className="h-4 w-4 mr-2">↻</span> Reset Transform
+                  <span className="h-4 w-4 mr-2">↻</span> Réinitialiser la
+                  transformation
                 </Button>
 
                 <div className="border-t border-border pt-3 mt-4">
@@ -443,7 +446,7 @@ export default function EditorProperties({
                     className="w-full"
                     onClick={handleDeleteObject}
                   >
-                    Delete Object
+                    Supprimer l'objet
                   </Button>
                 </div>
               </div>

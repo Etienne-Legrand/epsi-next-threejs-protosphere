@@ -4,7 +4,11 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Environment } from "@react-three/drei";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  Environment,
+} from "@react-three/drei";
 
 // Example scenes for the tabs
 function SimpleObjects() {
@@ -20,7 +24,11 @@ function SimpleObjects() {
         </mesh>
         <mesh position={[0, 1.2, 0]}>
           <sphereGeometry args={[0.7, 32, 32]} />
-          <meshStandardMaterial color="#ae3ec9" metalness={0.5} roughness={0.2} />
+          <meshStandardMaterial
+            color="#ae3ec9"
+            metalness={0.5}
+            roughness={0.2}
+          />
         </mesh>
         <mesh position={[0, -1.2, 0]}>
           <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
@@ -46,7 +54,7 @@ function ArchitectureModel() {
           <meshStandardMaterial color="#94a3b8" />
         </mesh>
         {/* Roof */}
-        <mesh position={[0, 1, 0]} rotation={[0, 0, Math.PI/4]}>
+        <mesh position={[0, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
           <boxGeometry args={[3, 1.5, 2]} />
           <meshStandardMaterial color="#ef4444" />
         </mesh>
@@ -81,22 +89,38 @@ function ProductDesign() {
         {/* Phone body */}
         <mesh position={[0, 0, 0]} castShadow>
           <boxGeometry args={[2, 4, 0.2]} />
-          <meshStandardMaterial color="#171717" metalness={0.8} roughness={0.2} />
+          <meshStandardMaterial
+            color="#171717"
+            metalness={0.8}
+            roughness={0.2}
+          />
         </mesh>
         {/* Screen */}
         <mesh position={[0, 0, 0.11]} receiveShadow>
           <boxGeometry args={[1.8, 3.8, 0.01]} />
-          <meshStandardMaterial color="#18181b" metalness={0.5} roughness={0.1} />
+          <meshStandardMaterial
+            color="#18181b"
+            metalness={0.5}
+            roughness={0.1}
+          />
         </mesh>
         {/* Camera island */}
         <mesh position={[0.5, 1.5, 0.2]}>
           <cylinderGeometry args={[0.2, 0.2, 0.1, 32]} />
-          <meshStandardMaterial color="#171717" metalness={0.9} roughness={0.2} />
+          <meshStandardMaterial
+            color="#171717"
+            metalness={0.9}
+            roughness={0.2}
+          />
         </mesh>
         {/* Camera lens */}
         <mesh position={[0.5, 1.5, 0.25]}>
           <cylinderGeometry args={[0.1, 0.1, 0.1, 32]} />
-          <meshStandardMaterial color="#0c0a09" metalness={0.9} roughness={0.1} />
+          <meshStandardMaterial
+            color="#0c0a09"
+            metalness={0.9}
+            roughness={0.1}
+          />
         </mesh>
       </group>
       <OrbitControls autoRotate autoRotateSpeed={0.7} enableZoom={false} />
@@ -112,17 +136,20 @@ export default function Examples() {
     <section id="examples" className="py-24">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">See What You Can Create</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Découvrez ce que vous pouvez créer
+          </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            From simple objects to complex designs, our platform makes 3D creation accessible to everyone.
+            Des objets simples aux conceptions complexes, notre plateforme rend
+            la création 3D accessible à tous.
           </p>
         </div>
 
         <Tabs defaultValue="simple" className="w-full max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="simple">Simple Objects</TabsTrigger>
+            <TabsTrigger value="simple">Objets simples</TabsTrigger>
             <TabsTrigger value="architecture">Architecture</TabsTrigger>
-            <TabsTrigger value="product">Product Design</TabsTrigger>
+            <TabsTrigger value="product">Design Produit</TabsTrigger>
           </TabsList>
 
           <Card className="border border-border/40 bg-card/30 backdrop-blur">

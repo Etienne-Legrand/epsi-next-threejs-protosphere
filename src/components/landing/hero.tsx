@@ -4,7 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, useGLTF, Environment } from "@react-three/drei";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  useGLTF,
+  Environment,
+} from "@react-three/drei";
 
 // Simple 3D scene for hero section
 function HeroScene() {
@@ -43,19 +48,21 @@ export default function LandingHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="gradient-heading">Design in 3D</span>
+              <span className="gradient-heading">Concevez en 3D</span>
               <br />
-              <span>With Ease</span>
+              <span>En toute simplicité</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0">
-              A modern 3D design studio for creating, editing, and collaborating on 3D models with a beautiful, intuitive interface.
+              Un studio de conception 3D moderne pour créer, éditer et
+              collaborer sur des modèles 3D avec une interface belle et
+              intuitive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button size="lg" asChild>
-                <Link href="/dashboard">Start Creating</Link>
+                <Link href="/dashboard">Commencer à créer</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="#examples">See Examples</Link>
+                <Link href="#examples">Voir les exemples</Link>
               </Button>
             </div>
           </div>
@@ -73,13 +80,19 @@ export default function LandingHero() {
       <div className="absolute -z-10 top-0 inset-x-0 transform-gpu overflow-hidden blur-3xl">
         <div
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}
+          style={{
+            clipPath:
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+          }}
         />
       </div>
       <div className="absolute -z-10 bottom-0 inset-x-0 transform-gpu overflow-hidden blur-3xl">
         <div
           className="relative left-[calc(50%+11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#3b82f6] to-[#8b5cf6] opacity-20 sm:left-[calc(50%+15rem)] sm:w-[72.1875rem]"
-          style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}
+          style={{
+            clipPath:
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+          }}
         />
       </div>
     </div>

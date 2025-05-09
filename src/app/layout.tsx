@@ -6,8 +6,9 @@ import { ClientBody } from "./ClientBody";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Modern 3D Studio - Create, Edit, Collaborate in 3D",
-  description: "A modern 3D modeling and design platform for creators and teams",
+  title: "Protosphere - Créer, Éditer, Collaborer en 3D",
+  description:
+    "Une plateforme moderne de modélisation et de conception 3D pour les créateurs et les équipes",
 };
 
 export default function RootLayout({
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body className={`${inter.className} dark`}>
         <ClientBody>{children}</ClientBody>
       </body>

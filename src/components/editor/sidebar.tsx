@@ -55,19 +55,19 @@ export default function EditorSidebar() {
       })
     );
     e.dataTransfer.effectAllowed = "move";
-    toast.success(`Dragging ${shapeName}`);
+    toast.success(`Glissement de ${shapeName}`);
   };
 
   // Add shape handler - directly use the store
   const handleAddShape = (shapeType: ObjectType) => {
     addObject(shapeType);
-    toast.success(`Added ${shapeType} to scene`);
+    toast.success(`${shapeType} ajouté à la scène`);
   };
 
   // Boolean operation handler
   const handleOperation = (operation: string) => {
     setSelectedOperation(operation);
-    toast.success(`${operation} operation selected`);
+    toast.success(`Opération ${operation} sélectionnée`);
   };
 
   // Material selection handler
@@ -86,9 +86,11 @@ export default function EditorSidebar() {
           opacity: properties?.opacity || 1.0,
         },
       });
-      toast.success(`Applied ${materialName} to selected object`);
+      toast.success(`${materialName} appliqué à l'objet sélectionné`);
     } else {
-      toast.info(`Select an object to apply ${materialName} material`);
+      toast.info(
+        `Sélectionnez un objet pour appliquer le matériau ${materialName}`
+      );
     }
   };
 
@@ -108,7 +110,7 @@ export default function EditorSidebar() {
       })
     );
     e.dataTransfer.effectAllowed = "copy";
-    toast.success(`Dragging ${materialName} material`);
+    toast.success(`Glissement du matériau ${materialName}`);
   };
 
   // Render collapsed sidebar
@@ -126,7 +128,9 @@ export default function EditorSidebar() {
                 <ChevronsRight className="h-5 w-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="right">Expand Sidebar</TooltipContent>
+            <TooltipContent side="right">
+              Développer la barre latérale
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -145,7 +149,7 @@ export default function EditorSidebar() {
                   <Box className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Shapes</TooltipContent>
+              <TooltipContent side="right">Formes</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -163,7 +167,7 @@ export default function EditorSidebar() {
                   <Palette className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Materials</TooltipContent>
+              <TooltipContent side="right">Matériaux</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -181,7 +185,7 @@ export default function EditorSidebar() {
                   <Layers className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Layers</TooltipContent>
+              <TooltipContent side="right">Calques</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -192,7 +196,7 @@ export default function EditorSidebar() {
   return (
     <div className="w-60 h-full border-r border-border bg-card/50 flex flex-col">
       <div className="flex justify-between items-center p-2 border-b border-border">
-        <h3 className="font-medium text-sm">Tools</h3>
+        <h3 className="font-medium text-sm">Outils</h3>
         <Button
           variant="ghost"
           size="icon"
@@ -210,13 +214,13 @@ export default function EditorSidebar() {
       >
         <TabsList className="w-full justify-start p-1 h-9">
           <TabsTrigger value="shapes" className="h-7 text-xs">
-            <Box className="h-4 w-4 mr-1" /> Shapes
+            <Box className="h-4 w-4 mr-1" /> Formes
           </TabsTrigger>
           <TabsTrigger value="materials" className="h-7 text-xs">
-            <Palette className="h-4 w-4 mr-1" /> Materials
+            <Palette className="h-4 w-4 mr-1" /> Matériaux
           </TabsTrigger>
           <TabsTrigger value="layers" className="h-7 text-xs">
-            <Layers className="h-4 w-4 mr-1" /> Layers
+            <Layers className="h-4 w-4 mr-1" /> Calques
           </TabsTrigger>
         </TabsList>
 
@@ -236,7 +240,9 @@ export default function EditorSidebar() {
                     <span className="text-xs">Cube</span>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Add a Cube (C) or drag to scene</TooltipContent>
+                <TooltipContent>
+                  Ajouter un Cube (C) ou glisser sur la scène
+                </TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
@@ -251,11 +257,11 @@ export default function EditorSidebar() {
                     onDragStart={(e) => handleDragStart(e, "Sphere", "sphere")}
                   >
                     <Circle className="h-5 w-5" />
-                    <span className="text-xs">Sphere</span>
+                    <span className="text-xs">Sphère</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add a Sphere (S) or drag to scene
+                  Ajouter une Sphère (S) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -273,11 +279,11 @@ export default function EditorSidebar() {
                     }
                   >
                     <Cylinder className="h-5 w-5" />
-                    <span className="text-xs">Cylinder</span>
+                    <span className="text-xs">Cylindre</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add a Cylinder (Y) or drag to scene
+                  Ajouter un Cylindre (Y) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -295,11 +301,11 @@ export default function EditorSidebar() {
                     }
                   >
                     <Pyramid className="h-5 w-5" />
-                    <span className="text-xs">Pyramid</span>
+                    <span className="text-xs">Pyramide</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add a Pyramid (P) or drag to scene
+                  Ajouter une Pyramide (P) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -315,10 +321,12 @@ export default function EditorSidebar() {
                     onDragStart={(e) => handleDragStart(e, "Cone", "cone")}
                   >
                     <Triangle className="h-5 w-5" />
-                    <span className="text-xs">Cone</span>
+                    <span className="text-xs">Cône</span>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Add a Cone (O) or drag to scene</TooltipContent>
+                <TooltipContent>
+                  Ajouter un Cône (O) ou glisser sur la scène
+                </TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
@@ -333,11 +341,11 @@ export default function EditorSidebar() {
                     onDragStart={(e) => handleDragStart(e, "Torus", "torus")}
                   >
                     <Hexagon className="h-5 w-5" />
-                    <span className="text-xs">Torus</span>
+                    <span className="text-xs">Tore</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add a Torus (T) or drag to scene
+                  Ajouter un Tore (T) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -353,11 +361,11 @@ export default function EditorSidebar() {
                     onDragStart={(e) => handleDragStart(e, "Plane", "plane")}
                   >
                     <Grid3X3 className="h-5 w-5" />
-                    <span className="text-xs">Plane</span>
+                    <span className="text-xs">Plan</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add a Plane (L) or drag to scene
+                  Ajouter un Plan (L) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -373,18 +381,18 @@ export default function EditorSidebar() {
                     onDragStart={(e) => handleDragStart(e, "Text", "text")}
                   >
                     <Box className="h-5 w-5" />
-                    <span className="text-xs">Text</span>
+                    <span className="text-xs">Texte</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Add 3D Text (X) or drag to scene
+                  Ajouter un Texte 3D (X) ou glisser sur la scène
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
 
           <div className="mt-4">
-            <h4 className="text-xs font-medium mb-2">Boolean Operations</h4>
+            <h4 className="text-xs font-medium mb-2">Opérations booléennes</h4>
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant={
@@ -404,7 +412,7 @@ export default function EditorSidebar() {
                 onClick={() => handleOperation("Subtract")}
               >
                 <Scissors className="h-3 w-3 mr-1" />
-                Subtract
+                Soustraire
               </Button>
               <Button
                 variant={
@@ -414,7 +422,7 @@ export default function EditorSidebar() {
                 onClick={() => handleOperation("Intersect")}
               >
                 <Combine className="h-3 w-3 mr-1" />
-                Intersect
+                Intersection
               </Button>
               <Button
                 variant={
@@ -424,20 +432,20 @@ export default function EditorSidebar() {
                 onClick={() => handleOperation("Difference")}
               >
                 <div className="h-3 w-3 mr-1">⊖</div>
-                Difference
+                Différence
               </Button>
             </div>
 
             {selectedOperation && (
               <div className="mt-2 p-2 bg-secondary/30 rounded-md text-xs">
                 <p className="text-muted-foreground">
-                  <strong>{selectedOperation} mode active.</strong>
+                  <strong>Mode {selectedOperation} actif.</strong>
                   <br />
-                  1. Select the first object
+                  1. Sélectionnez le premier objet
                   <br />
-                  2. Select the second object
+                  2. Sélectionnez le second objet
                   <br />
-                  3. Click "Apply" to perform the operation
+                  3. Cliquez sur "Appliquer" pour effectuer l'opération
                 </p>
                 <div className="flex gap-2 mt-2">
                   <Button
@@ -445,22 +453,22 @@ export default function EditorSidebar() {
                     variant="default"
                     className="w-full text-xs"
                     onClick={() => {
-                      toast.success(`Applied ${selectedOperation} operation`);
+                      toast.success(`Opération ${selectedOperation} appliquée`);
                       setSelectedOperation(null);
                     }}
                   >
-                    Apply
+                    Appliquer
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     className="w-1/2 text-xs"
                     onClick={() => {
-                      toast.error(`Cancelled ${selectedOperation} operation`);
+                      toast.error(`Opération ${selectedOperation} annulée`);
                       setSelectedOperation(null);
                     }}
                   >
-                    Cancel
+                    Annuler
                   </Button>
                 </div>
               </div>
@@ -469,18 +477,18 @@ export default function EditorSidebar() {
         </TabsContent>
 
         <TabsContent value="materials" className="p-2">
-          <h4 className="text-xs font-medium mb-2">Materials</h4>
+          <h4 className="text-xs font-medium mb-2">Matériaux</h4>
           <div className="grid grid-cols-2 gap-2">
             <div
               className="rounded-md h-14 bg-blue-500 cursor-pointer relative group"
               onClick={() => handleMaterialSelect("Blue", "#3b82f6")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Blue Material", "#3b82f6")
+                handleMaterialDrag(e, "Matériau bleu", "#3b82f6")
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Blue</span>
+                <span className="text-white text-xs font-medium">Bleu</span>
               </div>
             </div>
             <div
@@ -488,11 +496,11 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Red", "#ef4444")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Red Material", "#ef4444")
+                handleMaterialDrag(e, "Matériau rouge", "#ef4444")
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Red</span>
+                <span className="text-white text-xs font-medium">Rouge</span>
               </div>
             </div>
             <div
@@ -500,11 +508,11 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Green", "#22c55e")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Green Material", "#22c55e")
+                handleMaterialDrag(e, "Matériau vert", "#22c55e")
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Green</span>
+                <span className="text-white text-xs font-medium">Vert</span>
               </div>
             </div>
             <div
@@ -512,11 +520,11 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Yellow", "#eab308")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Yellow Material", "#eab308")
+                handleMaterialDrag(e, "Matériau jaune", "#eab308")
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Yellow</span>
+                <span className="text-white text-xs font-medium">Jaune</span>
               </div>
             </div>
             <div
@@ -524,11 +532,11 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Purple", "#a855f7")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Purple Material", "#a855f7")
+                handleMaterialDrag(e, "Matériau violet", "#a855f7")
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Purple</span>
+                <span className="text-white text-xs font-medium">Violet</span>
               </div>
             </div>
             <div
@@ -536,14 +544,14 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Metal", "metal")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Metal Material", "metal", {
+                handleMaterialDrag(e, "Matériau métal", "metal", {
                   metalness: 0.8,
                   roughness: 0.2,
                 })
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Metal</span>
+                <span className="text-white text-xs font-medium">Métal</span>
               </div>
             </div>
             <div
@@ -551,14 +559,14 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Glass", "glass")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Glass Material", "glass", {
+                handleMaterialDrag(e, "Matériau verre", "glass", {
                   opacity: 0.7,
                   transparent: true,
                 })
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Glass</span>
+                <span className="text-white text-xs font-medium">Verre</span>
               </div>
             </div>
             <div
@@ -566,27 +574,28 @@ export default function EditorSidebar() {
               onClick={() => handleMaterialSelect("Wood", "wood")}
               draggable
               onDragStart={(e) =>
-                handleMaterialDrag(e, "Wood Material", "wood", {
+                handleMaterialDrag(e, "Matériau bois", "wood", {
                   roughness: 0.8,
                 })
               }
             >
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-                <span className="text-white text-xs font-medium">Wood</span>
+                <span className="text-white text-xs font-medium">Bois</span>
               </div>
             </div>
           </div>
 
           <div className="mt-3 p-2 bg-secondary/30 rounded-md text-xs">
             <p className="text-muted-foreground">
-              <strong>Tip:</strong> Drag a material onto an object in the scene
-              to apply it, or click to select it for new objects.
+              <strong>Astuce :</strong> Glissez un matériau sur un objet dans la
+              scène pour l'appliquer, ou cliquez pour le sélectionner pour les
+              nouveaux objets.
             </p>
           </div>
         </TabsContent>
 
         <TabsContent value="layers" className="p-2">
-          <h4 className="text-xs font-medium mb-2">Layers</h4>
+          <h4 className="text-xs font-medium mb-2">Calques</h4>
           <div className="space-y-1">
             <Button
               variant="ghost"
@@ -595,7 +604,7 @@ export default function EditorSidebar() {
             >
               <div className="flex items-center">
                 <Layers className="h-4 w-4 mr-2" />
-                <span className="text-xs">Layer 1</span>
+                <span className="text-xs">Calque 1</span>
               </div>
               <div className="h-3 w-3 rounded-full bg-green-500"></div>
             </Button>
@@ -606,7 +615,7 @@ export default function EditorSidebar() {
             >
               <div className="flex items-center">
                 <Layers className="h-4 w-4 mr-2" />
-                <span className="text-xs">Layer 2</span>
+                <span className="text-xs">Calque 2</span>
               </div>
               <div className="h-3 w-3 rounded-full bg-blue-500"></div>
             </Button>
@@ -617,24 +626,24 @@ export default function EditorSidebar() {
                 size="sm"
                 className="w-full justify-center h-8 text-xs"
                 onClick={() => {
-                  const newLayerName = `Layer ${Math.floor(
+                  const newLayerName = `Calque ${Math.floor(
                     Math.random() * 1000
                   )}`;
-                  toast.success(`Created new layer: ${newLayerName}`);
+                  toast.success(`Nouveau calque créé : ${newLayerName}`);
                 }}
               >
-                <span className="mr-1">+</span> Add Layer
+                <span className="mr-1">+</span> Ajouter un calque
               </Button>
             </div>
           </div>
 
           <div className="mt-3 p-2 bg-secondary/30 rounded-md text-xs">
             <p className="text-muted-foreground">
-              <strong>Layer Manager</strong>
+              <strong>Gestionnaire de calques</strong>
               <br />
-              Organize your 3D scene with layers. Click a layer to make it
-              active. Objects created or moved will be added to the active
-              layer.
+              Organisez votre scène 3D avec des calques. Cliquez sur un calque
+              pour l'activer. Les objets créés ou déplacés seront ajoutés au
+              calque actif.
             </p>
           </div>
         </TabsContent>

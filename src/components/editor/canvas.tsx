@@ -68,7 +68,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       e.stopPropagation();
       selectObject(id);
       setSelectedObject(id);
-      toast.success(`Selected ${id}`);
+      toast.success(`${id} sélectionné`);
     },
     [selectObject, setSelectedObject]
   );
@@ -89,15 +89,15 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
         switch (e.key.toLowerCase()) {
           case "g":
             setActiveTool("move");
-            toast.success("Move tool activated");
+            toast.success("Outil de déplacement activé");
             break;
           case "r":
             setActiveTool("rotate");
-            toast.success("Rotate tool activated");
+            toast.success("Outil de rotation activé");
             break;
           case "s":
             setActiveTool("scale");
-            toast.success("Scale tool activated");
+            toast.success("Outil de mise à l'échelle activé");
             break;
         }
       }
@@ -188,7 +188,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
   ) => {
     addObject(type);
     toast.success(
-      `Added ${type} at position (${position[0].toFixed(
+      `${type} ajouté à la position (${position[0].toFixed(
         2
       )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
     );
@@ -309,9 +309,9 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
             // Enregistre l'état final après la transformation
             endTransformation(
               selectedObject,
-              `Applied ${transformMode} transformation`
+              `Transformation ${transformMode} appliquée`
             );
-            toast.success(`Applied ${transformMode} transformation`);
+            toast.success(`Transformation ${transformMode} appliquée`);
           }}
         />
       )}
@@ -365,7 +365,7 @@ function CanvasLoading() {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-        <p className="mt-2">Loading 3D editor...</p>
+        <p className="mt-2">Chargement de l'éditeur 3D...</p>
       </div>
     </div>
   );
@@ -438,7 +438,7 @@ export default function EditorCanvas({
 
         // Position will be handled by the store's addObject function
         toast.success(
-          `Added ${data.name} at position (${position[0].toFixed(
+          `${data.name} ajouté à la position (${position[0].toFixed(
             2
           )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
         );
@@ -457,11 +457,11 @@ export default function EditorCanvas({
             opacity: material.opacity || 1.0,
           },
         });
-        toast.success(`Applied ${material.name} to ${selectedObject}`);
+        toast.success(`${material.name} appliqué à ${selectedObject}`);
       }
     } catch (error) {
       console.error("Error handling drop:", error);
-      toast.error("Failed to process dropped item");
+      toast.error("Échec du traitement de l'élément déposé");
     }
   };
 

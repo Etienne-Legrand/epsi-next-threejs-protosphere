@@ -97,7 +97,7 @@ export default function EditorToolbar({
   // Handle alignment operations
   const handleAlign = () => {
     if (!selectedObject) return;
-    toast.success(`Opening alignment options for ${selectedObject}`);
+    toast.success(`Ouverture des options d'alignement pour ${selectedObject}`);
   };
 
   return (
@@ -115,7 +115,7 @@ export default function EditorToolbar({
                 <MousePointer className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Select (V)</TooltipContent>
+            <TooltipContent>Sélectionner (V)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -131,7 +131,7 @@ export default function EditorToolbar({
                 <Move className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Move (G)</TooltipContent>
+            <TooltipContent>Déplacer (G)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -147,7 +147,7 @@ export default function EditorToolbar({
                 <Maximize2 className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Scale (S)</TooltipContent>
+            <TooltipContent>Redimensionner (S)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -163,7 +163,7 @@ export default function EditorToolbar({
                 <RotateCw className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Rotate (R)</TooltipContent>
+            <TooltipContent>Pivoter (R)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -184,7 +184,7 @@ export default function EditorToolbar({
                 <Copy className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Copy (Ctrl+C)</TooltipContent>
+            <TooltipContent>Copier (Ctrl+C)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -201,7 +201,7 @@ export default function EditorToolbar({
                 <Scissors className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Cut (Ctrl+X)</TooltipContent>
+            <TooltipContent>Couper (Ctrl+X)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -218,7 +218,7 @@ export default function EditorToolbar({
                 <Clipboard className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Paste (Ctrl+V)</TooltipContent>
+            <TooltipContent>Coller (Ctrl+V)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -235,7 +235,7 @@ export default function EditorToolbar({
                 <Eraser className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Delete (Del)</TooltipContent>
+            <TooltipContent>Supprimer (Del)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -256,7 +256,7 @@ export default function EditorToolbar({
                 <AlignCenter className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Align</TooltipContent>
+            <TooltipContent>Aligner</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -273,7 +273,7 @@ export default function EditorToolbar({
                 <CornerUpLeft className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Undo (Ctrl+Z)</TooltipContent>
+            <TooltipContent>Annuler (Ctrl+Z)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
@@ -290,7 +290,7 @@ export default function EditorToolbar({
                 <CornerUpRight className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Redo (Ctrl+Y)</TooltipContent>
+            <TooltipContent>Rétablir (Ctrl+Y)</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>

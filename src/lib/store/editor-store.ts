@@ -117,7 +117,7 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 export const useEditorStore = create<EditorState>((set, get) => ({
   // Project details
   projectId: null,
-  projectName: "Untitled Project",
+  projectName: "Projet sans titre",
   isModified: false,
 
   // Scene state
@@ -139,7 +139,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       },
       {
         id: "sphere-1",
-        name: "Sphere 1",
+        name: "Sphère 1",
         type: "sphere",
         position: { x: 2, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
@@ -181,7 +181,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
   setProjectName: (name) => {
     set({ projectName: name, isModified: true });
-    get().saveToHistory(`Project renamed to ${name}`);
+    get().saveToHistory(`Projet renommé en ${name}`);
   },
 
   markAsModified: () => set({ isModified: true }),
@@ -222,9 +222,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }));
 
     // Ajouter l'action à l'historique
-    get().saveToHistory(`Added ${newName}`);
+    get().saveToHistory(`Ajout de ${newName}`);
 
-    toast.success(`Added ${newName}`);
+    toast.success(`Ajout de ${newName}`);
   },
 
   updateObject: (id, updates) => {
@@ -253,7 +253,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
     // Sauvegarder dans l'historique uniquement si nous ne sommes pas en mode transformation
     if (!isTransforming) {
-      get().saveToHistory(`Updated ${id}`);
+      get().saveToHistory(`Mise à jour de ${id}`);
     }
   },
 
@@ -277,8 +277,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     });
 
     // Ajouter à l'historique
-    get().saveToHistory(`Deleted ${objectName}`);
-    toast.success(`Deleted ${objectName}`);
+    get().saveToHistory(`Suppression de ${objectName}`);
+    toast.success(`Suppression de ${objectName}`);
   },
 
   duplicateObject: (id) => {
@@ -289,7 +289,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     const newObject: Object3D = {
       ...JSON.parse(JSON.stringify(objectToDuplicate)),
       id: newId,
-      name: `${objectToDuplicate.name} (Copy)`,
+      name: `${objectToDuplicate.name} (Copie)`,
       position: {
         x: objectToDuplicate.position.x + 1,
         y: objectToDuplicate.position.y,
@@ -307,8 +307,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }));
 
     // Ajouter à l'historique
-    get().saveToHistory(`Duplicated ${objectToDuplicate.name}`);
-    toast.success(`Duplicated ${objectToDuplicate.name}`);
+    get().saveToHistory(`Duplication de ${objectToDuplicate.name}`);
+    toast.success(`Duplication de ${objectToDuplicate.name}`);
   },
 
   // New clipboard actions
@@ -319,7 +319,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     // Make a deep copy of the object
     const clipboardObject = JSON.parse(JSON.stringify(objectToCopy));
     set({ clipboard: clipboardObject });
-    toast.success(`Copied ${objectToCopy.name} to clipboard`);
+    toast.success(`Copie de ${objectToCopy.name} dans le presse-papier`);
   },
 
   cutObject: (id) => {
@@ -341,14 +341,14 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }));
 
     // Ajouter à l'historique
-    get().saveToHistory(`Cut ${objectToCut.name}`);
-    toast.success(`Cut ${objectToCut.name} to clipboard`);
+    get().saveToHistory(`Coupe de ${objectToCut.name}`);
+    toast.success(`Coupe de ${objectToCut.name} dans le presse-papier`);
   },
 
   pasteObject: () => {
     const { clipboard } = get();
     if (!clipboard) {
-      toast.error("No object in clipboard to paste");
+      toast.error("Aucun objet dans le presse-papier à coller");
       return;
     }
 
@@ -356,7 +356,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     const newObject: Object3D = {
       ...JSON.parse(JSON.stringify(clipboard)),
       id: newId,
-      name: `${clipboard.name} (Copy)`,
+      name: `${clipboard.name} (Copie)`,
       position: {
         x: clipboard.position.x + 1, // Offset position slightly
         y: clipboard.position.y,
@@ -374,13 +374,13 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }));
 
     // Ajouter à l'historique
-    get().saveToHistory(`Pasted ${newObject.name}`);
-    toast.success(`Pasted ${newObject.name} from clipboard`);
+    get().saveToHistory(`Collage de ${newObject.name}`);
+    toast.success(`Collage de ${newObject.name} depuis le presse-papier`);
   },
 
   setActiveTool: (tool) => {
     set({ activeTool: tool });
-    toast.success(`Selected ${tool} tool`);
+    toast.success(`Outil ${tool} sélectionné`);
   },
 
   // Nouvelles fonctions d'historique
@@ -418,7 +418,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set((state) => {
       // Vérifier si on peut faire un undo
       if (state.historyIndex <= 0 || state.history.length === 0) {
-        toast.error("Nothing to undo");
+        toast.error("Rien à annuler");
         return state;
       }
 
@@ -426,7 +426,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       const prevState = state.history[newIndex].state;
       const actionDescription = state.history[newIndex + 1].description;
 
-      toast.success(`Undo: ${actionDescription}`);
+      toast.success(`Annulation : ${actionDescription}`);
 
       return {
         scene: JSON.parse(JSON.stringify(prevState.scene)), // Deep copy
@@ -441,7 +441,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set((state) => {
       // Vérifier si on peut faire un redo
       if (state.historyIndex >= state.history.length - 1) {
-        toast.error("Nothing to redo");
+        toast.error("Rien à rétablir");
         return state;
       }
 
@@ -449,7 +449,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       const nextState = state.history[newIndex].state;
       const actionDescription = state.history[newIndex].description;
 
-      toast.success(`Redo: ${actionDescription}`);
+      toast.success(`Rétablissement : ${actionDescription}`);
 
       return {
         scene: JSON.parse(JSON.stringify(nextState.scene)), // Deep copy
@@ -472,7 +472,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
             scene: JSON.parse(JSON.stringify(currentScene)),
             selectedObjectId: currentSelection,
           },
-          description: "Initial state",
+          description: "État initial",
           timestamp: Date.now(),
         },
       ],
@@ -498,7 +498,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       // Set local state
       awareness.setLocalState({
         id: generateId(),
-        name: "Me",
+        name: "Moi",
         color: "#" + Math.floor(Math.random() * 16777215).toString(16),
       });
 
@@ -521,10 +521,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         doc,
       });
 
-      toast.success("Collaboration started - Share the URL to collaborate");
+      toast.success("Collaboration démarrée - Partagez l'URL pour collaborer");
     } catch (error) {
       console.error("Error starting collaboration:", error);
-      toast.error("Failed to start collaboration");
+      toast.error("Échec du démarrage de la collaboration");
     }
   },
 
@@ -546,7 +546,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       collaborators: [],
     });
 
-    toast.success("Collaboration stopped");
+    toast.success("Collaboration arrêtée");
   },
 
   // Nouvelles fonctions pour gérer les transformations avec historique
