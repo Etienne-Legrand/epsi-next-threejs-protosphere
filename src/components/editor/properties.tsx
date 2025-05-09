@@ -1,7 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Copy, ChevronDown, ChevronUp, Box, CircleIcon } from "lucide-react";
+import {
+  X,
+  Copy,
+  Box,
+  Cylinder,
+  Torus,
+  Circle,
+  Pyramid,
+  Cone,
+  Type,
+  Square,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,7 +27,7 @@ interface EditorPropertiesProps {
 export default function EditorProperties({
   selectedObject,
   onClose,
-}: EditorPropertiesProps) {
+}: Readonly<EditorPropertiesProps>) {
   // Get the object data from the store
   const object = useEditorStore((state) =>
     state.scene.objects.find((obj) => obj.id === selectedObject)
@@ -142,11 +153,28 @@ export default function EditorProperties({
     <div className="h-full flex flex-col bg-slate-900 text-white">
       <div className="flex items-center justify-between px-4 py-2 border-b border-slate-700">
         <div className="flex items-center">
-          {object.type === "cube" ? (
-            <Box className="h-4 w-4 mr-2 text-slate-300" />
-          ) : (
-            <CircleIcon className="h-4 w-4 mr-2 text-slate-300" />
-          )}
+          {(() => {
+            switch (object.type) {
+              case "cube":
+                return <Box className="h-4 w-4 mr-2 text-slate-300" />;
+              case "sphere":
+                return <Circle className="h-4 w-4 mr-2 text-slate-300" />;
+              case "cylinder":
+                return <Cylinder className="h-4 w-4 mr-2 text-slate-300" />;
+              case "pyramid":
+                return <Pyramid className="h-4 w-4 mr-2 text-slate-300" />;
+              case "cone":
+                return <Cone className="h-4 w-4 mr-2 text-slate-300" />;
+              case "torus":
+                return <Torus className="h-4 w-4 mr-2 text-slate-300" />;
+              case "plane":
+                return <Square className="h-4 w-4 mr-2 text-slate-300" />;
+              case "text":
+                return <Type className="h-4 w-4 mr-2 text-slate-300" />;
+              default:
+                return null;
+            }
+          })()}
           <h3 className="font-medium text-sm text-white">{name}</h3>
         </div>
         <Button

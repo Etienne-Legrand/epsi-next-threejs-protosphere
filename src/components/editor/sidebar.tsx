@@ -16,11 +16,12 @@ import {
   Circle,
   Triangle,
   Pyramid,
-  Hexagon,
   Image as ImageIcon,
   Palette,
-  Grid3X3,
   Box,
+  Square,
+  Torus,
+  Type,
   Layers,
   SquaresUnite,
   Combine,
@@ -116,7 +117,7 @@ export default function EditorSidebar() {
   // Render collapsed sidebar
   if (isCollapsed) {
     return (
-      <div className="w-14 h-full border-r border-slate-700 bg-slate-800 flex flex-col items-center py-2 text-white">
+      <div className="w-14 h-full border-r border-slate-700 bg-slate-900 flex flex-col items-center py-2 text-white">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -366,7 +367,7 @@ export default function EditorSidebar() {
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Torus", "torus")}
                   >
-                    <Hexagon className="h-5 w-5" />
+                    <Torus className="h-5 w-5" />
                     <span className="text-xs">Tore</span>
                   </Button>
                 </TooltipTrigger>
@@ -386,7 +387,7 @@ export default function EditorSidebar() {
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Plane", "plane")}
                   >
-                    <Grid3X3 className="h-5 w-5" />
+                    <Square className="h-5 w-5" />
                     <span className="text-xs">Plan</span>
                   </Button>
                 </TooltipTrigger>
@@ -406,7 +407,7 @@ export default function EditorSidebar() {
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Text", "text")}
                   >
-                    <Box className="h-5 w-5" />
+                    <Type className="h-5 w-5" />
                     <span className="text-xs">Texte</span>
                   </Button>
                 </TooltipTrigger>
