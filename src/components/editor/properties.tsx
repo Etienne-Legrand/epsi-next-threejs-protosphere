@@ -139,17 +139,22 @@ export default function EditorProperties({
   };
 
   return (
-    <div className="h-full flex flex-col bg-background">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border">
+    <div className="h-full flex flex-col bg-slate-900 text-white">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-700">
         <div className="flex items-center">
           {object.type === "cube" ? (
-            <Box className="h-4 w-4 mr-2" />
+            <Box className="h-4 w-4 mr-2 text-slate-300" />
           ) : (
-            <CircleIcon className="h-4 w-4 mr-2" />
+            <CircleIcon className="h-4 w-4 mr-2 text-slate-300" />
           )}
-          <h3 className="font-medium text-sm">{name}</h3>
+          <h3 className="font-medium text-sm text-white">{name}</h3>
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          className="text-white hover:bg-slate-700"
+        >
           <X className="h-4 w-4" />
         </Button>
       </div>
@@ -164,19 +169,28 @@ export default function EditorProperties({
             <Input
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              className="h-8"
+              className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
             />
           </div>
 
           <Tabs defaultValue="transform">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="transform" className="text-xs">
+            <TabsList className="grid w-full grid-cols-3 bg-slate-700">
+              <TabsTrigger
+                value="transform"
+                className="h-7 text-xs data-[state=active]:bg-slate-600"
+              >
                 Transformation
               </TabsTrigger>
-              <TabsTrigger value="material" className="text-xs">
+              <TabsTrigger
+                value="material"
+                className="h-7 text-xs data-[state=active]:bg-slate-600"
+              >
                 Matériau
               </TabsTrigger>
-              <TabsTrigger value="options" className="text-xs">
+              <TabsTrigger
+                value="options"
+                className="h-7 text-xs data-[state=active]:bg-slate-600"
+              >
                 Options
               </TabsTrigger>
             </TabsList>
@@ -195,7 +209,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handlePositionChange("x", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -207,7 +221,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handlePositionChange("y", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -219,7 +233,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handlePositionChange("z", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -238,7 +252,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleRotationChange("x", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -250,7 +264,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleRotationChange("y", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -262,7 +276,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleRotationChange("z", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                     />
                   </div>
@@ -281,7 +295,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleScaleChange("x", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                       min={0.1}
                     />
@@ -294,7 +308,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleScaleChange("y", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                       min={0.1}
                     />
@@ -307,7 +321,7 @@ export default function EditorProperties({
                       onChange={(e) =>
                         handleScaleChange("z", parseFloat(e.target.value))
                       }
-                      className="h-8"
+                      className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                       step={0.1}
                       min={0.1}
                     />
@@ -331,7 +345,7 @@ export default function EditorProperties({
                     onChange={(e) =>
                       handleMaterialChange("color", e.target.value)
                     }
-                    className="h-8 flex-1"
+                    className="h-8 flex-1 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                   />
                 </div>
               </div>
@@ -352,7 +366,7 @@ export default function EditorProperties({
                         parseFloat(e.target.value)
                       )
                     }
-                    className="h-8"
+                    className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                   />
                   <span className="text-xs w-8 text-right">
                     {material.metalness.toFixed(2)}
@@ -375,7 +389,7 @@ export default function EditorProperties({
                         parseFloat(e.target.value)
                       )
                     }
-                    className="h-8"
+                    className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                   />
                   <span className="text-xs w-8 text-right">
                     {material.roughness.toFixed(2)}
@@ -398,7 +412,7 @@ export default function EditorProperties({
                         parseFloat(e.target.value)
                       )
                     }
-                    className="h-8"
+                    className="h-8 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
                   />
                   <span className="text-xs w-8 text-right">
                     {material.opacity.toFixed(2)}
@@ -416,7 +430,7 @@ export default function EditorProperties({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full justify-start"
+                  className="w-full justify-start bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                   onClick={handleDuplicateObject}
                 >
                   <Copy className="h-4 w-4 mr-2" /> Dupliquer l'objet
@@ -424,7 +438,7 @@ export default function EditorProperties({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full justify-start"
+                  className="w-full justify-start bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                   onClick={handleCenterObject}
                 >
                   <span className="h-4 w-4 mr-2">⊕</span> Centrer l'objet
@@ -432,7 +446,7 @@ export default function EditorProperties({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full justify-start"
+                  className="w-full justify-start bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                   onClick={handleResetTransform}
                 >
                   <span className="h-4 w-4 mr-2">↻</span> Réinitialiser la

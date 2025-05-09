@@ -204,8 +204,8 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       {/* Grid for reference */}
       <Grid
         infiniteGrid
-        cellColor="#444444"
-        sectionColor="#888888"
+        cellColor="#64748b"
+        sectionColor="#94a3b8"
         fadeDistance={30}
         fadeStrength={1.5}
         cellSize={1}
@@ -218,11 +218,14 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       {/* Main directional light with shadow */}
       <directionalLight
         position={[10, 10, 10]}
-        intensity={1}
+        intensity={1.5}
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
       />
+
+      {/* Additional fill light for better visibility */}
+      <directionalLight position={[-10, 5, -10]} intensity={0.8} />
 
       {/* The 3D objects */}
       {scene.objects.map((object) => (
@@ -343,7 +346,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
 // Loading fallback
 function CanvasLoading() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 flex items-center justify-center bg-slate-800">
       <div className="flex flex-col items-center text-muted-foreground">
         <svg
           className="animate-spin -ml-1 mr-3 h-8 w-8 text-primary"
@@ -486,18 +489,16 @@ export default function EditorCanvas({
 
   return (
     <div
-      className="w-full h-full bg-gradient-to-b from-background to-background/80"
+      className="w-full h-full bg-gradient-to-b bg-slate-800 to-slate-950"
       ref={canvasRef}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <Canvas shadows onCreated={storeCamera}>
-        <Suspense fallback={<CanvasLoading />}>
-          <Scene
-            selectedObject={selectedObject}
-            setSelectedObject={setSelectedObject}
-          />
-        </Suspense>
+        <Scene
+          selectedObject={selectedObject}
+          setSelectedObject={setSelectedObject}
+        />
       </Canvas>
     </div>
   );

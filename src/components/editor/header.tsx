@@ -84,13 +84,18 @@ export default function EditorHeader({
   };
 
   return (
-    <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
+    <header className="border-b border-slate-700 bg-slate-900 backdrop-blur z-10 text-white">
       <div className="flex h-14 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="hover:bg-slate-700"
+                >
                   <Link href="/dashboard">
                     <ArrowLeft className="h-5 w-5" />
                   </Link>
@@ -108,7 +113,10 @@ export default function EditorHeader({
               onOpenChange={setIsRenameDialogOpen}
             >
               <DialogTrigger asChild>
-                <Button variant="ghost" className="h-auto py-1.5 px-2">
+                <Button
+                  variant="ghost"
+                  className="h-auto py-1.5 px-2 hover:bg-slate-700"
+                >
                   <span className="font-medium truncate max-w-[180px]">
                     {projectName}
                   </span>
@@ -168,6 +176,7 @@ export default function EditorHeader({
                   size="sm"
                   onClick={handleSave}
                   disabled={isSaving}
+                  className="bg-slate-800 border-slate-600 hover:bg-slate-700 text-white"
                 >
                   <Save className="h-4 w-4 mr-2" />
                   {isSaving ? "Enregistrement..." : "Enregistrer"}
@@ -185,6 +194,7 @@ export default function EditorHeader({
                     variant="outline"
                     size="sm"
                     onClick={handleStartCollaboration}
+                    className="bg-slate-800 border-slate-600 hover:bg-slate-700 text-white"
                   >
                     <Users className="h-4 w-4 mr-2" />
                     Collaborer
@@ -199,7 +209,11 @@ export default function EditorHeader({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-slate-800 border-slate-600 hover:bg-slate-700 text-white"
+                  >
                     <Share2 className="h-4 w-4 mr-2" />
                     Partager
                   </Button>
@@ -216,7 +230,11 @@ export default function EditorHeader({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="bg-slate-800 border-slate-600 hover:bg-slate-700 text-white"
+                    >
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>

@@ -68,7 +68,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-950 overflow-hidden">
       <EditorHeader
         projectName={useEditorStore.getState().projectName}
         isCollaborating={isCollaborating}
@@ -93,7 +93,7 @@ export default function EditorPage() {
             </div>
 
             {showProperties && selectedObjectId && (
-              <div className="w-80 border-l border-border overflow-y-auto">
+              <div className="w-80 border-l border-slate-700 overflow-y-auto bg-slate-900">
                 <EditorProperties
                   selectedObject={selectedObjectId}
                   onClose={() => setShowProperties(false)}

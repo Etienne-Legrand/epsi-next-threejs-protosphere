@@ -116,13 +116,14 @@ export default function EditorSidebar() {
   // Render collapsed sidebar
   if (isCollapsed) {
     return (
-      <div className="w-14 h-full border-r border-border bg-card/50 flex flex-col items-center py-2">
+      <div className="w-14 h-full border-r border-slate-700 bg-slate-800 flex flex-col items-center py-2 text-white">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
+                className="hover:bg-slate-700 text-white"
                 onClick={() => setIsCollapsed(false)}
               >
                 <ChevronsRight className="h-5 w-5" />
@@ -141,6 +142,11 @@ export default function EditorSidebar() {
                 <Button
                   variant={activeTab === "shapes" ? "secondary" : "ghost"}
                   size="icon"
+                  className={
+                    activeTab === "shapes"
+                      ? "bg-slate-600 hover:bg-slate-500"
+                      : "hover:bg-slate-700"
+                  }
                   onClick={() => {
                     setIsCollapsed(false);
                     setActiveTab("shapes");
@@ -159,6 +165,11 @@ export default function EditorSidebar() {
                 <Button
                   variant={activeTab === "materials" ? "secondary" : "ghost"}
                   size="icon"
+                  className={
+                    activeTab === "materials"
+                      ? "bg-slate-600 hover:bg-slate-500"
+                      : "hover:bg-slate-700"
+                  }
                   onClick={() => {
                     setIsCollapsed(false);
                     setActiveTab("materials");
@@ -177,6 +188,11 @@ export default function EditorSidebar() {
                 <Button
                   variant={activeTab === "layers" ? "secondary" : "ghost"}
                   size="icon"
+                  className={
+                    activeTab === "layers"
+                      ? "bg-slate-600 hover:bg-slate-500"
+                      : "hover:bg-slate-700"
+                  }
                   onClick={() => {
                     setIsCollapsed(false);
                     setActiveTab("layers");
@@ -194,12 +210,13 @@ export default function EditorSidebar() {
   }
 
   return (
-    <div className="w-60 h-full border-r border-border bg-card/50 flex flex-col">
-      <div className="flex justify-between items-center p-2 border-b border-border">
+    <div className="w-60 h-full border-r border-slate-700 bg-slate-900 flex flex-col text-white">
+      <div className="flex justify-between items-center p-2 border-b border-slate-700">
         <h3 className="font-medium text-sm">Outils</h3>
         <Button
           variant="ghost"
           size="icon"
+          className="hover:bg-slate-700 text-white"
           onClick={() => setIsCollapsed(true)}
         >
           <ChevronsLeft className="h-5 w-5" />
@@ -212,14 +229,23 @@ export default function EditorSidebar() {
         onValueChange={setActiveTab}
         className="flex-1"
       >
-        <TabsList className="w-full justify-start p-1 h-9">
-          <TabsTrigger value="shapes" className="h-7 text-xs">
+        <TabsList className="w-full justify-start p-1 h-9 bg-slate-700 m-2">
+          <TabsTrigger
+            value="shapes"
+            className="h-7 text-xs data-[state=active]:bg-slate-600"
+          >
             <Box className="h-4 w-4 mr-1" /> Formes
           </TabsTrigger>
-          <TabsTrigger value="materials" className="h-7 text-xs">
+          <TabsTrigger
+            value="materials"
+            className="h-7 text-xs data-[state=active]:bg-slate-600"
+          >
             <Palette className="h-4 w-4 mr-1" /> Matériaux
           </TabsTrigger>
-          <TabsTrigger value="layers" className="h-7 text-xs">
+          <TabsTrigger
+            value="layers"
+            className="h-7 text-xs data-[state=active]:bg-slate-600"
+          >
             <Layers className="h-4 w-4 mr-1" /> Calques
           </TabsTrigger>
         </TabsList>
@@ -231,7 +257,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("cube")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Cube", "cube")}
@@ -251,7 +277,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("sphere")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Sphere", "sphere")}
@@ -271,7 +297,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("cylinder")}
                     draggable
                     onDragStart={(e) =>
@@ -293,7 +319,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("pyramid")}
                     draggable
                     onDragStart={(e) =>
@@ -315,7 +341,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("cone")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Cone", "cone")}
@@ -335,7 +361,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("torus")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Torus", "torus")}
@@ -355,7 +381,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("plane")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Plane", "plane")}
@@ -375,7 +401,7 @@ export default function EditorSidebar() {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-14 w-full flex flex-col justify-center items-center gap-1"
+                    className="h-14 w-full flex flex-col justify-center items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                     onClick={() => handleAddShape("text")}
                     draggable
                     onDragStart={(e) => handleDragStart(e, "Text", "text")}
@@ -391,14 +417,18 @@ export default function EditorSidebar() {
             </TooltipProvider>
           </div>
 
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <h4 className="text-xs font-medium mb-2">Opérations booléennes</h4>
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant={
                   selectedOperation === "Union" ? "secondary" : "outline"
                 }
-                className="h-9 text-xs flex items-center justify-center"
+                className={`h-9 text-xs flex items-center justify-center ${
+                  selectedOperation === "Union"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "bg-slate-700 hover:bg-slate-600 border-slate-600"
+                }`}
                 onClick={() => handleOperation("Union")}
               >
                 <SquaresUnite className="h-3 w-3 mr-1" />
@@ -408,7 +438,11 @@ export default function EditorSidebar() {
                 variant={
                   selectedOperation === "Subtract" ? "secondary" : "outline"
                 }
-                className="h-9 text-xs flex items-center justify-center"
+                className={`h-9 text-xs flex items-center justify-center ${
+                  selectedOperation === "Subtract"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "bg-slate-700 hover:bg-slate-600 border-slate-600"
+                }`}
                 onClick={() => handleOperation("Subtract")}
               >
                 <Scissors className="h-3 w-3 mr-1" />
@@ -418,7 +452,11 @@ export default function EditorSidebar() {
                 variant={
                   selectedOperation === "Intersect" ? "secondary" : "outline"
                 }
-                className="h-9 text-xs flex items-center justify-center"
+                className={`h-9 text-xs flex items-center justify-center ${
+                  selectedOperation === "Intersect"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "bg-slate-700 hover:bg-slate-600 border-slate-600"
+                }`}
                 onClick={() => handleOperation("Intersect")}
               >
                 <Combine className="h-3 w-3 mr-1" />
@@ -428,7 +466,11 @@ export default function EditorSidebar() {
                 variant={
                   selectedOperation === "Difference" ? "secondary" : "outline"
                 }
-                className="h-9 text-xs flex items-center justify-center"
+                className={`h-9 text-xs flex items-center justify-center ${
+                  selectedOperation === "Difference"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "bg-slate-700 hover:bg-slate-600 border-slate-600"
+                }`}
                 onClick={() => handleOperation("Difference")}
               >
                 <div className="h-3 w-3 mr-1">⊖</div>
@@ -437,7 +479,7 @@ export default function EditorSidebar() {
             </div>
 
             {selectedOperation && (
-              <div className="mt-2 p-2 bg-secondary/30 rounded-md text-xs">
+              <div className="mt-2 p-2 bg-slate-700/50 rounded-md text-xs">
                 <p className="text-muted-foreground">
                   <strong>Mode {selectedOperation} actif.</strong>
                   <br />
@@ -451,7 +493,7 @@ export default function EditorSidebar() {
                   <Button
                     size="sm"
                     variant="default"
-                    className="w-full text-xs"
+                    className="w-full text-xs bg-slate-600 hover:bg-slate-500"
                     onClick={() => {
                       toast.success(`Opération ${selectedOperation} appliquée`);
                       setSelectedOperation(null);
@@ -462,7 +504,7 @@ export default function EditorSidebar() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="w-1/2 text-xs"
+                    className="w-1/2 text-xs bg-slate-700 border-slate-600 hover:bg-slate-600"
                     onClick={() => {
                       toast.error(`Opération ${selectedOperation} annulée`);
                       setSelectedOperation(null);
@@ -473,7 +515,7 @@ export default function EditorSidebar() {
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
         </TabsContent>
 
         <TabsContent value="materials" className="p-2">
@@ -599,7 +641,7 @@ export default function EditorSidebar() {
           <div className="space-y-1">
             <Button
               variant="ghost"
-              className="w-full justify-between h-8 px-2 hover:bg-secondary/50"
+              className="w-full justify-between h-8 px-2 hover:bg-slate-700"
               onClick={() => handleLayerSelect("Layer 1")}
             >
               <div className="flex items-center">
@@ -610,7 +652,7 @@ export default function EditorSidebar() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-between h-8 px-2 hover:bg-secondary/50"
+              className="w-full justify-between h-8 px-2 hover:bg-slate-700"
               onClick={() => handleLayerSelect("Layer 2")}
             >
               <div className="flex items-center">
@@ -624,7 +666,7 @@ export default function EditorSidebar() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-center h-8 text-xs"
+                className="w-full justify-center h-8 text-xs bg-slate-700 border-slate-600 hover:bg-slate-600"
                 onClick={() => {
                   const newLayerName = `Calque ${Math.floor(
                     Math.random() * 1000
@@ -637,7 +679,7 @@ export default function EditorSidebar() {
             </div>
           </div>
 
-          <div className="mt-3 p-2 bg-secondary/30 rounded-md text-xs">
+          <div className="mt-3 p-2 bg-slate-700/50 rounded-md text-xs">
             <p className="text-muted-foreground">
               <strong>Gestionnaire de calques</strong>
               <br />

@@ -101,7 +101,7 @@ export default function EditorToolbar({
   };
 
   return (
-    <div className="toolbar h-12 border-b border-border flex items-center px-2 bg-card/50">
+    <div className="toolbar h-12 border-b border-slate-700 flex items-center px-2 bg-slate-900 text-white">
       <div className="flex items-center space-x-1 mr-2">
         <TooltipProvider>
           <Tooltip>
@@ -109,7 +109,11 @@ export default function EditorToolbar({
               <Button
                 variant={activeTool === "select" ? "secondary" : "ghost"}
                 size="icon"
-                className="h-8 w-8"
+                className={`h-8 w-8 text-white ${
+                  activeTool === "select"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "hover:bg-slate-700"
+                }`}
                 onClick={() => handleToolClick("select")}
               >
                 <MousePointer className="h-4 w-4" />
@@ -125,7 +129,11 @@ export default function EditorToolbar({
               <Button
                 variant={activeTool === "move" ? "secondary" : "ghost"}
                 size="icon"
-                className="h-8 w-8"
+                className={`h-8 w-8 text-white ${
+                  activeTool === "move"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "hover:bg-slate-700"
+                }`}
                 onClick={() => handleToolClick("move")}
               >
                 <Move className="h-4 w-4" />
@@ -141,7 +149,11 @@ export default function EditorToolbar({
               <Button
                 variant={activeTool === "scale" ? "secondary" : "ghost"}
                 size="icon"
-                className="h-8 w-8"
+                className={`h-8 w-8 text-white ${
+                  activeTool === "scale"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "hover:bg-slate-700"
+                }`}
                 onClick={() => handleToolClick("scale")}
               >
                 <Maximize2 className="h-4 w-4" />
@@ -157,7 +169,11 @@ export default function EditorToolbar({
               <Button
                 variant={activeTool === "rotate" ? "secondary" : "ghost"}
                 size="icon"
-                className="h-8 w-8"
+                className={`h-8 w-8 text-white ${
+                  activeTool === "rotate"
+                    ? "bg-slate-600 hover:bg-slate-500"
+                    : "hover:bg-slate-700"
+                }`}
                 onClick={() => handleToolClick("rotate")}
               >
                 <RotateCw className="h-4 w-4" />
@@ -168,7 +184,7 @@ export default function EditorToolbar({
         </TooltipProvider>
       </div>
 
-      <div className="h-6 w-px bg-border mr-2"></div>
+      <div className="h-6 w-px bg-slate-600 mr-2"></div>
 
       <div className="flex items-center space-x-1 mr-2">
         <TooltipProvider>
@@ -177,7 +193,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleClipboardOperation("copy")}
                 disabled={!selectedObject}
               >
@@ -194,7 +210,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleClipboardOperation("cut")}
                 disabled={!selectedObject}
               >
@@ -211,7 +227,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleClipboardOperation("paste")}
                 disabled={!clipboard}
               >
@@ -228,7 +244,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleClipboardOperation("delete")}
                 disabled={!selectedObject}
               >
@@ -240,7 +256,7 @@ export default function EditorToolbar({
         </TooltipProvider>
       </div>
 
-      <div className="h-6 w-px bg-border mr-2"></div>
+      <div className="h-6 w-px bg-slate-600 mr-2"></div>
 
       <div className="flex items-center space-x-1 mr-2">
         <TooltipProvider>
@@ -249,7 +265,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={handleAlign}
                 disabled={!selectedObject}
               >
@@ -266,7 +282,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleHistoryOperation("undo")}
                 disabled={historyIndex <= 0}
               >
@@ -283,7 +299,7 @@ export default function EditorToolbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-slate-700 text-white"
                 onClick={() => handleHistoryOperation("redo")}
                 disabled={historyIndex >= history.length - 1}
               >
@@ -297,7 +313,7 @@ export default function EditorToolbar({
 
       <div className="ml-auto flex items-center space-x-1">
         {selectedObject && (
-          <div className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded-md">
+          <div className="text-xs text-white bg-slate-700 px-2 py-1 rounded-md">
             {selectedObject}
           </div>
         )}
