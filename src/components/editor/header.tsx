@@ -62,25 +62,25 @@ export default function EditorHeader({
     // Simulate saving
     setTimeout(() => {
       setIsSaving(false);
-      toast.success("Projet enregistré avec succès");
+      // toast.success("Projet enregistré avec succès");
     }, 1000);
   };
 
   const handleRename = () => {
     // Handle project rename
-    toast.success(`Projet renommé en ${newProjectName}`);
+    // toast.success(`Projet renommé en ${newProjectName}`);
     setIsRenameDialogOpen(false);
   };
 
   const handleExport = (format: string) => {
-    toast.success(`Exportation au format ${format}...`);
+    // toast.success(`Exportation au format ${format}...`);
   };
 
   const handleStartCollaboration = () => {
     setIsCollaborating(true);
-    toast.success(
-      "Mode collaboration activé - Partagez le lien pour collaborer"
-    );
+    // toast.success(
+    //   "Mode collaboration activé - Partagez le lien pour collaborer"
+    // );
   };
 
   return (

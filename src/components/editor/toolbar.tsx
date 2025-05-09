@@ -97,7 +97,7 @@ export default function EditorToolbar({
   // Handle alignment operations
   const handleAlign = () => {
     if (!selectedObject) return;
-    toast.success(`Ouverture des options d'alignement pour ${selectedObject}`);
+    // toast.success(`Ouverture des options d'alignement pour ${selectedObject}`);
   };
 
   return (

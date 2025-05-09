@@ -56,19 +56,19 @@ export default function EditorSidebar() {
       })
     );
     e.dataTransfer.effectAllowed = "move";
-    toast.success(`Glissement de ${shapeName}`);
+    // toast.success(`Glissement de ${shapeName}`);
   };
 
   // Add shape handler - directly use the store
   const handleAddShape = (shapeType: ObjectType) => {
     addObject(shapeType);
-    toast.success(`${shapeType} ajouté à la scène`);
+    // toast.success(`${shapeType} ajouté à la scène`);
   };
 
   // Boolean operation handler
   const handleOperation = (operation: string) => {
     setSelectedOperation(operation);
-    toast.success(`Opération ${operation} sélectionnée`);
+    // toast.success(`Opération ${operation} sélectionnée`);
   };
 
   // Material selection handler
@@ -87,7 +87,7 @@ export default function EditorSidebar() {
           opacity: properties?.opacity || 1.0,
         },
       });
-      toast.success(`${materialName} appliqué à l'objet sélectionné`);
+      // toast.success(`${materialName} appliqué à l'objet sélectionné`);
     } else {
       toast.info(
         `Sélectionnez un objet pour appliquer le matériau ${materialName}`
@@ -111,7 +111,7 @@ export default function EditorSidebar() {
       })
     );
     e.dataTransfer.effectAllowed = "copy";
-    toast.success(`Glissement du matériau ${materialName}`);
+    // toast.success(`Glissement du matériau ${materialName}`);
   };
 
   // Render collapsed sidebar
@@ -496,7 +496,7 @@ export default function EditorSidebar() {
                     variant="default"
                     className="w-full text-xs bg-slate-600 hover:bg-slate-500"
                     onClick={() => {
-                      toast.success(`Opération ${selectedOperation} appliquée`);
+                      // toast.success(`Opération ${selectedOperation} appliquée`);
                       setSelectedOperation(null);
                     }}
                   >
@@ -672,7 +672,7 @@ export default function EditorSidebar() {
                   const newLayerName = `Calque ${Math.floor(
                     Math.random() * 1000
                   )}`;
-                  toast.success(`Nouveau calque créé : ${newLayerName}`);
+                  // toast.success(`Nouveau calque créé : ${newLayerName}`);
                 }}
               >
                 <span className="mr-1">+</span> Ajouter un calque

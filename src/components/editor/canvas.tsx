@@ -68,7 +68,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       e.stopPropagation();
       selectObject(id);
       setSelectedObject(id);
-      toast.success(`${id} sélectionné`);
+      // toast.success(`${id} sélectionné`);
     },
     [selectObject, setSelectedObject]
   );
@@ -89,15 +89,15 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
         switch (e.key.toLowerCase()) {
           case "g":
             setActiveTool("move");
-            toast.success("Outil de déplacement activé");
+            // toast.success("Outil de déplacement activé");
             break;
           case "r":
             setActiveTool("rotate");
-            toast.success("Outil de rotation activé");
+            // toast.success("Outil de rotation activé");
             break;
           case "s":
             setActiveTool("scale");
-            toast.success("Outil de mise à l'échelle activé");
+            // toast.success("Outil de mise à l'échelle activé");
             break;
         }
       }
@@ -187,11 +187,11 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     position: [number, number, number]
   ) => {
     addObject(type);
-    toast.success(
-      `${type} ajouté à la position (${position[0].toFixed(
-        2
-      )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
-    );
+    // toast.success(
+    //   `${type} ajouté à la position (${position[0].toFixed(
+    //     2
+    //   )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
+    // );
   };
 
   // Extract selected object
@@ -314,7 +314,7 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
               selectedObject,
               `Transformation ${transformMode} appliquée`
             );
-            toast.success(`Transformation ${transformMode} appliquée`);
+            // toast.success(`Transformation ${transformMode} appliquée`);
           }}
         />
       )}
@@ -440,11 +440,11 @@ export default function EditorCanvas({
         addObject(data.type);
 
         // Position will be handled by the store's addObject function
-        toast.success(
-          `${data.name} ajouté à la position (${position[0].toFixed(
-            2
-          )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
-        );
+        // toast.success(
+        //   `${data.name} ajouté à la position (${position[0].toFixed(
+        //     2
+        //   )}, ${position[1].toFixed(2)}, ${position[2].toFixed(2)})`
+        // );
       }
 
       // Get material data
@@ -460,7 +460,7 @@ export default function EditorCanvas({
             opacity: material.opacity || 1.0,
           },
         });
-        toast.success(`${material.name} appliqué à ${selectedObject}`);
+        // toast.success(`${material.name} appliqué à ${selectedObject}`);
       }
     } catch (error) {
       console.error("Error handling drop:", error);

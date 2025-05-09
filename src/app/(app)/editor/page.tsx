@@ -34,22 +34,22 @@ export default function EditorPage() {
     if (projectId) {
       setProjectId(projectId);
       setProjectName(`Projet ${projectId}`);
-      toast.success(`Projet chargé : Projet ${projectId}`);
+      // toast.success(`Projet chargé : Projet ${projectId}`);
     } else if (templateId) {
       setProjectId(templateId);
       setProjectName(`Modèle ${templateId}`);
-      toast.success(`Modèle chargé : Modèle ${templateId}`);
+      // toast.success(`Modèle chargé : Modèle ${templateId}`);
     } else {
       setProjectId(null);
       setProjectName("Projet sans titre");
-      toast.success("Nouveau projet vide créé");
+      // toast.success("Nouveau projet vide créé");
     }
 
     // Initialiser l'historique avec l'état actuel comme point de départ
     // Important de le faire après le chargement du projet pour capturer l'état initial
     setTimeout(() => {
       clearHistory();
-      toast.success("Historique annuler/refaire initialisé");
+      // toast.success("Historique annuler/refaire initialisé");
     }, 500); // Petit délai pour s'assurer que tout est bien chargé
   }, [projectId, templateId, setProjectId, setProjectName, clearHistory]);
 

@@ -81,21 +81,21 @@ export default function EditorProperties({
     const newPosition = { ...position, [axis]: value };
     setPosition(newPosition);
     updateObject(selectedObject, { position: newPosition });
-    toast.success(`Position ${axis} mise à jour à ${value}`);
+    // toast.success(`Position ${axis} mise à jour à ${value}`);
   };
 
   const handleRotationChange = (axis: keyof typeof rotation, value: number) => {
     const newRotation = { ...rotation, [axis]: value };
     setRotation(newRotation);
     updateObject(selectedObject, { rotation: newRotation });
-    toast.success(`Rotation ${axis} mise à jour à ${value}`);
+    // toast.success(`Rotation ${axis} mise à jour à ${value}`);
   };
 
   const handleScaleChange = (axis: keyof typeof scale, value: number) => {
     const newScale = { ...scale, [axis]: value };
     setScale(newScale);
     updateObject(selectedObject, { scale: newScale });
-    toast.success(`Échelle ${axis} mise à jour à ${value}`);
+    // toast.success(`Échelle ${axis} mise à jour à ${value}`);
   };
 
   const handleMaterialChange = (
@@ -107,13 +107,13 @@ export default function EditorProperties({
     updateObject(selectedObject, {
       material: newMaterial,
     });
-    toast.success(`Matériau ${property} mis à jour`);
+    // toast.success(`Matériau ${property} mis à jour`);
   };
 
   const handleNameChange = (value: string) => {
     setName(value);
     updateObject(selectedObject, { name: value });
-    toast.success(`Renommé en ${value}`);
+    // toast.success(`Renommé en ${value}`);
   };
 
   // Handle object actions
@@ -125,7 +125,7 @@ export default function EditorProperties({
     const newPosition = { x: 0, y: 0, z: 0 };
     setPosition(newPosition);
     updateObject(selectedObject, { position: newPosition });
-    toast.success(`${name} centré`);
+    // toast.success(`${name} centré`);
   };
 
   const handleResetTransform = () => {
@@ -140,13 +140,13 @@ export default function EditorProperties({
       scale: defaultScale,
     });
 
-    toast.success(`Transformation réinitialisée pour ${name}`);
+    // toast.success(`Transformation réinitialisée pour ${name}`);
   };
 
   const handleDeleteObject = () => {
     deleteObject(selectedObject);
     onClose();
-    toast.success(`${name} supprimé`);
+    // toast.success(`${name} supprimé`);
   };
 
   return (
