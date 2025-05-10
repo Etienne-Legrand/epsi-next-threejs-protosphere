@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function DashboardHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-700 bg-slate-900 text-white">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard" className="flex items-center gap-2">
@@ -51,28 +51,31 @@ export default function DashboardHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-white hover:bg-slate-700"
           >
             <Bell className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-white hover:bg-slate-700"
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-white hover:bg-slate-700"
           >
             <Settings className="h-5 w-5" />
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-8 w-8 rounded-full hover:bg-slate-700"
+              >
                 <Avatar>
                   <AvatarImage src="/avatars/user.jpg" alt="Utilisateur" />
                   <AvatarFallback>
@@ -81,7 +84,11 @@ export default function DashboardHeader() {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent
+              className="w-56 bg-slate-800 border-slate-700 text-white"
+              align="end"
+              forceMount
+            >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
@@ -92,24 +99,24 @@ export default function DashboardHeader() {
                   </p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-slate-700" />
+              <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
                 <Link href="/profile" className="flex w-full">
                   Profil
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
                 <Link href="/settings" className="flex w-full">
                   Paramètres
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
                 <Link href="/billing" className="flex w-full">
                   Facturation
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-slate-700" />
+              <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
                 <Link href="/" className="flex w-full">
                   Se déconnecter
                 </Link>

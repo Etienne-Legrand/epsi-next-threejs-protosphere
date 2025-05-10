@@ -21,25 +21,25 @@ import DashboardHeader from "@/components/dashboard/header";
 const projects = [
   {
     id: "1",
-    name: "Chaise Moderne",
+    name: "Chaise moderne",
     createdAt: "il y a 2 jours",
     thumbnail: "bg-gradient-to-br from-blue-500 to-indigo-500",
   },
   {
     id: "2",
-    name: "Maison Simple",
+    name: "Maison simple",
     createdAt: "il y a 1 semaine",
     thumbnail: "bg-gradient-to-br from-purple-500 to-pink-500",
   },
   {
     id: "3",
-    name: "Prototype de Téléphone",
+    name: "Prototype de téléphone",
     createdAt: "il y a 2 semaines",
     thumbnail: "bg-gradient-to-br from-green-500 to-emerald-500",
   },
   {
     id: "4",
-    name: "Sculpture Abstraite",
+    name: "Sculpture abstraite",
     createdAt: "il y a 1 mois",
     thumbnail: "bg-gradient-to-br from-orange-500 to-amber-500",
   },
@@ -48,19 +48,19 @@ const projects = [
 const templates = [
   {
     id: "template-1",
-    name: "Projet Vide",
+    name: "Projet vide",
     description: "Commencez avec une toile vierge",
     thumbnail: "bg-gradient-to-br from-gray-700 to-gray-900",
   },
   {
     id: "template-2",
-    name: "Pièce Basique",
+    name: "Pièce basique",
     description: "Commencez avec une disposition simple de pièce",
     thumbnail: "bg-gradient-to-br from-blue-500 to-indigo-500",
   },
   {
     id: "template-3",
-    name: "Présentation de Produit",
+    name: "Présentation de produit",
     description: "Modèle pour la visualisation de produits",
     thumbnail: "bg-gradient-to-br from-purple-500 to-pink-500",
   },
@@ -81,7 +81,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-800 text-white">
       <DashboardHeader />
 
       <main className="container mx-auto px-4 py-6">
@@ -99,12 +99,16 @@ export default function DashboardPage() {
               <input
                 type="text"
                 placeholder="Rechercher des projets..."
-                className="pl-10 h-10 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="pl-10 h-10 bg-slate-700 border-slate-600 border text-white rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-slate-600 bg-slate-700 hover:bg-slate-600 text-white"
+            >
               <Filter className="h-4 w-4" />
             </Button>
             <Dialog
@@ -112,29 +116,42 @@ export default function DashboardPage() {
               onOpenChange={setIsCreateDialogOpen}
             >
               <DialogTrigger asChild>
-                <Button>
+                <Button className="bg-slate-700 hover:bg-slate-600 text-white">
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Nouveau Projet
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="bg-slate-800 border-slate-700 text-white">
                 <DialogHeader>
-                  <DialogTitle>Créer un Nouveau Projet</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle>Créer un nouveau projet</DialogTitle>
+                  <DialogDescription className="text-muted-foreground">
                     Commencez de zéro ou choisissez un modèle
                   </DialogDescription>
                 </DialogHeader>
 
                 <Tabs defaultValue="templates" className="mt-4">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="templates">Modèles</TabsTrigger>
-                    <TabsTrigger value="blank">Projet Vierge</TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-2 bg-slate-700">
+                    <TabsTrigger
+                      value="templates"
+                      className="data-[state=active]:bg-slate-600"
+                    >
+                      Modèles
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="blank"
+                      className="data-[state=active]:bg-slate-600"
+                    >
+                      Projet vierge
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="templates" className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {templates.map((template) => (
-                        <Card key={template.id} className="card-hover">
+                        <Card
+                          key={template.id}
+                          className="card-hover bg-slate-900 border-slate-600"
+                        >
                           <CardContent className="p-4">
                             <div
                               className={`w-full h-32 rounded-md mb-3 ${template.thumbnail}`}
@@ -146,12 +163,12 @@ export default function DashboardPage() {
                           </CardContent>
                           <CardFooter>
                             <Button
-                              className="w-full"
+                              className="w-full bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                               asChild
                               onClick={() => setIsCreateDialogOpen(false)}
                             >
                               <Link href={`/editor?template=${template.id}`}>
-                                Utiliser ce Modèle
+                                Utiliser ce modèle
                               </Link>
                             </Button>
                           </CardFooter>
@@ -172,8 +189,9 @@ export default function DashboardPage() {
                       <Button
                         asChild
                         onClick={() => setIsCreateDialogOpen(false)}
+                        className="bg-slate-400 hover:bg-slate-300 text-slate-950"
                       >
-                        <Link href="/editor">Créer un Projet Vierge</Link>
+                        <Link href="/editor">Créer un projet vierge</Link>
                       </Button>
                     </div>
                   </TabsContent>
@@ -183,6 +201,7 @@ export default function DashboardPage() {
                   <Button
                     variant="outline"
                     onClick={() => setIsCreateDialogOpen(false)}
+                    className="border-slate-600 bg-slate-700 hover:bg-slate-600"
                   >
                     Annuler
                   </Button>
@@ -196,7 +215,7 @@ export default function DashboardPage() {
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <Link key={project.id} href={`/editor?project=${project.id}`}>
-                <Card className="card-hover h-full">
+                <Card className="card-hover h-full border border-slate-700 bg-slate-900/80 backdrop-blur text-white">
                   <CardContent className="p-0">
                     <div
                       className={`w-full h-48 rounded-t-lg ${project.thumbnail}`}
@@ -216,7 +235,11 @@ export default function DashboardPage() {
               <p className="text-muted-foreground mb-4">
                 Aucun projet ne correspond à votre recherche
               </p>
-              <Button variant="outline" onClick={() => setSearchQuery("")}>
+              <Button
+                variant="outline"
+                onClick={() => setSearchQuery("")}
+                className="border-slate-600 bg-slate-700 hover:bg-slate-600"
+              >
                 Effacer la Recherche
               </Button>
             </div>
@@ -225,7 +248,10 @@ export default function DashboardPage() {
               <p className="text-muted-foreground mb-4">
                 Vous n'avez pas encore créé de projets
               </p>
-              <Button onClick={() => setIsCreateDialogOpen(true)}>
+              <Button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="bg-slate-700 hover:bg-slate-600"
+              >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Créer Votre Premier Projet
               </Button>

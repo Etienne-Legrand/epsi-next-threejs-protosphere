@@ -85,8 +85,8 @@ export default function Pricing() {
               key={index}
               className={`card-hover border ${
                 tier.popular
-                  ? "bg-slate-800/70 border-primary/20 shadow-md"
-                  : "bg-slate-900/70 border-slate-700"
+                  ? "bg-slate-800/80 border-primary/20 shadow-md"
+                  : "bg-slate-900/80 border-slate-700"
               } backdrop-blur text-white`}
             >
               <CardHeader>

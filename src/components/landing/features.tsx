@@ -95,7 +95,7 @@ export default function Features() {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="card-hover border border-slate-700 bg-slate-900/50 backdrop-blur text-white"
+              className="card-hover border border-slate-700 bg-slate-900/80 backdrop-blur text-white"
             >
               <CardHeader className="pb-2">
                 <div

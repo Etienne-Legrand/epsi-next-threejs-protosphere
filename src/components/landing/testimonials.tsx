@@ -56,7 +56,7 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
-              className="card-hover border border-slate-700 bg-slate-900/50 backdrop-blur h-full text-white"
+              className="card-hover border border-slate-700 bg-slate-900/80 backdrop-blur h-full text-white"
             >
               <CardContent className="pt-6">
                 <div className="flex items-center mb-4">
