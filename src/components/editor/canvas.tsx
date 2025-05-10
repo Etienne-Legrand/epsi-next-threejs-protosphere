@@ -203,13 +203,17 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
     <>
       {/* Grid for reference */}
       <Grid
-        infiniteGrid
-        cellColor="#64748b"
-        sectionColor="#94a3b8"
-        fadeDistance={30}
-        fadeStrength={1.5}
-        cellSize={1}
-        sectionSize={5}
+        cellSize={0.5}
+        sectionThickness={1.5}
+        cellColor="#475569"
+        sectionSize={3}
+        cellThickness={1}
+        sectionColor="#475569"
+        side={THREE.DoubleSide}
+        followCamera
+        infiniteGrid={true}
+        fadeDistance={100}
+        fadeStrength={2.5}
       />
 
       {/* Ambient light */}
@@ -286,7 +290,6 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
           </Html>
         </mesh>
       ))}
-
       {/* The background plane to receive drag & drop and handle deselection */}
       <mesh
         position={[0, -0.001, 0]}
@@ -297,7 +300,6 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
         <planeGeometry />
         <meshStandardMaterial transparent opacity={0.0} />
       </mesh>
-
       {/* Transform controls for selected object */}
       {selectedObject && selectedObjectRef && transformMode && (
         <TransformControls
@@ -318,24 +320,20 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
           }}
         />
       )}
-
       {/* Environment lighting */}
       <Environment preset="city" />
-
       {/* Orbit controls for camera */}
       <OrbitControls
         makeDefault
         enableDamping
         dampingFactor={0.25}
         rotateSpeed={0.7}
-        minDistance={2}
-        maxDistance={20}
+        maxDistance={50}
       />
-
       {/* Axes helper gizmo (similaire à l'image) */}
       <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
         <GizmoViewport
-          axisColors={["red", "green", "blue"]}
+          axisColors={["#9d4b4b", "#2f7f4f", "#3b5b9d"]}
           labelColor="white"
         />
       </GizmoHelper>
