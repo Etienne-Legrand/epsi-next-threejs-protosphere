@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Protosphere - Créer, Éditer, Collaborer en 3D",
   description:
-    "Une plateforme moderne de modélisation et de conception 3D pour les créateurs et les équipes",
+    "Une plateforme 3D moderne pour créer, collaborer et prototyper vos idées en équipe.",
 };
 
 export default function RootLayout({

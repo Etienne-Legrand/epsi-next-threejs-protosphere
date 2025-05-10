@@ -15,7 +15,7 @@ import {
 const tiers = [
   {
     name: "Gratuit",
-    description: "Parfait pour débuter avec la modélisation 3D de base.",
+    description: "Parfait pour débuter avec la modélisation 3D.",
     price: "0€",
     duration: "pour toujours",
     features: [
@@ -38,7 +38,7 @@ const tiers = [
       "Projets illimités",
       "Export vers tous les formats",
       "Collaboration en temps réel avec 3 utilisateurs",
-      "Support prioritaire",
+      "Support dédié",
       "Bibliothèque de matériaux personnalisés",
     ],
     buttonText: "S'abonner à Pro",
@@ -57,7 +57,6 @@ const tiers = [
       "Outils de collaboration avancés",
       "Historique des versions",
       "Modèles d'équipe",
-      "Support dédié",
       "Accès API",
     ],
     buttonText: "Contacter les ventes",

@@ -30,6 +30,12 @@ export default function LandingPage() {
               Exemples
             </Link>
             <Link
+              href="#testimonials"
+              className="text-slate-300 hover:text-white transition-colors"
+            >
+              Avis
+            </Link>
+            <Link
               href="#pricing"
               className="text-slate-300 hover:text-white transition-colors"
             >

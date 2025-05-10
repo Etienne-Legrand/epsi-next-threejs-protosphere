@@ -18,7 +18,7 @@ export default function DashboardHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-slate-700 bg-slate-900 text-white">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
             <span className="text-xl font-bold hidden md:inline-block">
               Protosphere

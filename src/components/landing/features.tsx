@@ -20,58 +20,58 @@ import {
 
 const features = [
   {
-    title: "Modélisation 3D Simple",
+    title: "Modélisation rapide",
     description:
-      "Créez des modèles 3D avec des formes de base, des extrusions et des opérations booléennes pour des itérations de conception rapides.",
+      "Créez des prototypes 3D avec des formes simples, des extrusions et des opérations booléennes.",
     icon: Shapes,
     color: "from-blue-500 to-indigo-500",
   },
   {
-    title: "Outils de Transformation",
+    title: "Transformations précises",
     description:
-      "Déplacez, tournez et redimensionnez facilement des objets avec des contrôles intuitifs pour un positionnement précis.",
+      "Positionnez, faites pivoter et redimensionnez facilement vos objets.",
     icon: Move,
     color: "from-purple-500 to-pink-500",
   },
   {
-    title: "Extrusion et Sculpture",
+    title: "Extrusion & sculpture",
     description:
-      "Transformez des formes 2D en objets 3D avec de puissants outils d'extrusion et des fonctionnalités de sculpture de base.",
+      "Donnez vie à vos idées 2D avec des outils d’extrusion et de sculpture intuitive.",
     icon: ArrowUpDown,
     color: "from-green-500 to-emerald-500",
   },
   {
-    title: "Gestion des Calques",
+    title: "Calques organisés",
     description:
-      "Organisez vos designs avec des contrôles de calques intuitifs pour des modèles complexes à plusieurs parties.",
+      "Structurez vos modèles complexes grâce à une gestion claire des calques.",
     icon: Layers,
     color: "from-orange-500 to-amber-500",
   },
   {
-    title: "Collaboration en Temps Réel",
+    title: "Collaboration en temps réel",
     description:
-      "Travaillez ensemble avec vos coéquipiers en temps réel avec édition synchronisée et commentaires.",
+      "Prototypage en équipe avec édition synchronisée et commentaires en temps réel.",
     icon: Users,
     color: "from-sky-500 to-cyan-500",
   },
   {
-    title: "Personnalisation",
+    title: "Personnalisation visuelle",
     description:
-      "Appliquez des matériaux, des textures et des couleurs pour rendre vos modèles 3D visuellement époustouflants.",
+      "Ajoutez couleurs, textures et matériaux pour des prototypes expressifs.",
     icon: PenTool,
     color: "from-rose-500 to-red-500",
   },
   {
-    title: "Options d'Exportation",
+    title: "Exportation multiple",
     description:
-      "Exportez vos créations vers différents formats 3D pour l'impression, le rendu ou le développement de jeux.",
+      "Exportez vos modèles dans les bons formats pour l’impression, le rendu ou le jeu vidéo.",
     icon: Download,
     color: "from-yellow-500 to-amber-500",
   },
   {
-    title: "Scripts Avancés",
+    title: "Scripts avancés",
     description:
-      "Étendez les fonctionnalités avec JavaScript pour des outils personnalisés et des flux de travail automatisés.",
+      "Créez des outils sur mesure avec JavaScript pour automatiser votre prototypage.",
     icon: FileCode,
     color: "from-teal-500 to-green-500",
   },

@@ -6,11 +6,12 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 const testimonials = [
   {
     name: "Sarah Johnson",
-    role: "Designer Produit",
+    role: "Designer produit",
     avatar: "/avatars/sarah.jpg",
     fallback: "SJ",
     content:
-      "Protosphere a transformé mon flux de travail. L'interface intuitive m'a permis de commencer à créer immédiatement, et les fonctionnalités de collaboration en temps réel ont été un véritable changement de paradigme pour notre équipe.",
+      "Une interface fluide et facile à prendre en main. On a pu collaborer dès le premier jour, sans friction. Ça a clairement boosté notre processus de design.",
+    star: 5,
   },
   {
     name: "Michael Chen",
@@ -18,23 +19,26 @@ const testimonials = [
     avatar: "/avatars/michael.jpg",
     fallback: "MC",
     content:
-      "La simplicité de création et de modification des modèles 3D est incroyable. J'ai essayé de nombreux outils 3D, mais aucun n'a été aussi accessible et puissant pour la visualisation rapide de concepts.",
+      "Simple, rapide et efficace. Un vrai gain de temps pour visualiser mes idées en 3D.",
+    star: 5,
   },
   {
     name: "Emily Rodriguez",
-    role: "Développeuse de Jeux",
+    role: "Développeuse de jeux",
     avatar: "/avatars/emily.jpg",
     fallback: "ER",
     content:
-      "En tant que personne qui a besoin de créer rapidement des prototypes 3D, cette plateforme a été inestimable. Les options d'exportation fonctionnent parfaitement avec mon moteur de jeu, et les outils de modélisation sont exactement ce dont j'ai besoin.",
+      "J’ai besoin d’itérer vite sur des idées, et cette plateforme me le permet sans prise de tête. L’intégration avec mon moteur de jeu est top, et je gagne un temps fou.",
+    star: 5,
   },
   {
     name: "David Thompson",
-    role: "Passionné d'Impression 3D",
+    role: "Passionné d'impression 3D",
     avatar: "/avatars/david.jpg",
     fallback: "DT",
     content:
-      "Je cherchais un outil qui facilite la conception de modèles pour l'impression 3D sans courbe d'apprentissage abrupte. C'est exactement ce dont j'avais besoin - suffisamment puissant pour des designs complexes mais simple à utiliser.",
+      "Intuitif et puissant à la fois. Je ne suis pas designer pro, mais j’ai pu modéliser des pièces complexes pour mes impressions sans galérer. Super outil.",
+    star: 4,
   },
 ];
 
@@ -76,7 +80,7 @@ export default function Testimonials() {
               </CardContent>
               <CardFooter className="pt-0">
                 <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
+                  {[...Array(testimonial.star)].map((_, i) => (
                     <svg
                       key={i}
                       className="w-4 h-4 fill-current"

@@ -53,8 +53,8 @@ export default function LandingHero() {
               <span className="text-white">En toute simplicité</span>
             </h1>
             <p className="text-xl text-slate-300 mb-8 max-w-lg mx-auto lg:mx-0">
-              Un studio de conception 3D moderne pour créer, éditer et
-              collaborer sur des modèles 3D avec une interface belle et
+              Un studio de prototypage 3D moderne pour concevoir, ajuster et
+              collaborer sur des modèles 3D avec une interface élégante et
               intuitive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
