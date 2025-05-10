@@ -92,7 +92,7 @@ export default function EditorPage() {
             />
 
             {showProperties && selectedObjectId && (
-              <div className="absolute top-0 right-0 w-80 h-full z-20 border-l border-slate-700 overflow-y-auto bg-slate-900">
+              <div className="absolute top-0 right-0 h-full z-20 border-l border-slate-700 overflow-y-auto bg-slate-900">
                 <EditorProperties
                   selectedObject={selectedObjectId}
                   onClose={() => setShowProperties(false)}

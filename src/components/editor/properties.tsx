@@ -12,6 +12,9 @@ import {
   Cone,
   Type,
   Square,
+  SlidersHorizontal,
+  Palette,
+  Settings2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,6 +57,14 @@ export default function EditorProperties({
     }
   );
   const [name, setName] = useState(object?.name || "");
+
+  // State local pour le color picker
+  const [colorInput, setColorInput] = useState(material.color);
+
+  // Synchroniser le colorInput quand la couleur du matériau change
+  useEffect(() => {
+    setColorInput(material.color);
+  }, [material.color]);
 
   // Update local state when selected object changes
   useEffect(() => {
@@ -150,7 +161,7 @@ export default function EditorProperties({
   };
 
   return (
-    <div className="h-full flex flex-col bg-slate-900 text-white">
+    <div className="w-[18.5rem] h-full flex flex-col bg-slate-900 text-white">
       <div className="flex items-center justify-between px-4 py-2 border-b border-slate-700">
         <div className="flex items-center">
           {(() => {
@@ -187,10 +198,10 @@ export default function EditorProperties({
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto">
         <div className="space-y-6">
           {/* Object Name */}
-          <div className="space-y-2">
+          <div className="space-y-2 px-4 pt-4">
             <div className="flex justify-between items-center">
               <label className="text-xs font-medium">Nom</label>
             </div>
@@ -202,29 +213,34 @@ export default function EditorProperties({
           </div>
 
           <Tabs defaultValue="transform">
-            <TabsList className="grid w-full grid-cols-3 bg-slate-700">
-              <TabsTrigger
-                value="transform"
-                className="h-7 text-xs data-[state=active]:bg-slate-600"
-              >
-                Transformation
-              </TabsTrigger>
-              <TabsTrigger
-                value="material"
-                className="h-7 text-xs data-[state=active]:bg-slate-600"
-              >
-                Matériau
-              </TabsTrigger>
-              <TabsTrigger
-                value="options"
-                className="h-7 text-xs data-[state=active]:bg-slate-600"
-              >
-                Options
-              </TabsTrigger>
-            </TabsList>
+            <div className="m-3">
+              <TabsList className="w-full justify-between p-1 h-9 bg-slate-700">
+                <TabsTrigger
+                  value="transform"
+                  className="h-7 text-xs data-[state=active]:bg-slate-600 px-2"
+                >
+                  <SlidersHorizontal className="h-4 w-4 mr-1" />
+                  Géométrie
+                </TabsTrigger>
+                <TabsTrigger
+                  value="material"
+                  className="h-7 text-xs data-[state=active]:bg-slate-600 px-2"
+                >
+                  <Palette className="h-4 w-4 mr-1" />
+                  Matériau
+                </TabsTrigger>
+                <TabsTrigger
+                  value="options"
+                  className="h-7 text-xs data-[state=active]:bg-slate-600 px-2"
+                >
+                  <Settings2 className="h-4 w-4 mr-1" />
+                  Options
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Transform Tab */}
-            <TabsContent value="transform" className="space-y-5 pt-4">
+            <TabsContent value="transform" className="space-y-5 pt-2 px-4">
               {/* Position Control */}
               <div className="space-y-2">
                 <label className="text-xs font-medium">Position</label>
@@ -359,21 +375,29 @@ export default function EditorProperties({
             </TabsContent>
 
             {/* Material Tab */}
-            <TabsContent value="material" className="space-y-5 pt-4">
+            <TabsContent value="material" className="space-y-5 pt-2 px-4">
               {/* Color Picker */}
               <div className="space-y-2">
                 <label className="text-xs font-medium">Couleur</label>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-md border border-border cursor-pointer"
-                    style={{ backgroundColor: material.color }}
-                  />
+                <div className="flex items-center space-x-2">
+                  <Palette className="h-4 w-4" />
                   <Input
-                    value={material.color}
-                    onChange={(e) =>
+                    type="color"
+                    value={colorInput}
+                    onChange={(e) => setColorInput(e.target.value)}
+                    onBlur={(e) =>
                       handleMaterialChange("color", e.target.value)
                     }
-                    className="h-8 flex-1 bg-slate-700 border-slate-600 text-white focus:ring-slate-500"
+                    className="h-8 p-1 w-16 bg-slate-700 border-slate-600"
+                  />
+                  <Input
+                    type="text"
+                    value={colorInput}
+                    onChange={(e) => setColorInput(e.target.value)}
+                    onBlur={(e) =>
+                      handleMaterialChange("color", e.target.value)
+                    }
+                    className="h-8 flex-1 bg-slate-700 border-slate-600 text-white"
                   />
                 </div>
               </div>
@@ -450,7 +474,7 @@ export default function EditorProperties({
             </TabsContent>
 
             {/* Options Tab */}
-            <TabsContent value="options" className="pt-4">
+            <TabsContent value="options" className="pt-3 px-4">
               <div className="space-y-3">
                 <div className="text-xs font-medium pb-2">
                   Actions sur l'objet
@@ -488,6 +512,7 @@ export default function EditorProperties({
                     className="w-full"
                     onClick={handleDeleteObject}
                   >
+                    <X className="h-4 w-4 mr-2" />
                     Supprimer l'objet
                   </Button>
                 </div>

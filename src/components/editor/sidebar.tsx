@@ -265,11 +265,6 @@ export default function EditorSidebar() {
     }
   };
 
-  // Ajout d'un log pour déboguer l'onglet actif
-  useEffect(() => {
-    console.log("Onglet actif:", activeTab);
-  }, [activeTab]);
-
   // Fonction modifiée pour assigner un objet à un calque et appliquer sa visibilité
   const assignObjectToLayer = (objectId: string, layerId: string) => {
     if (objectId) {
