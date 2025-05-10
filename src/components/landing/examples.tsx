@@ -133,26 +133,41 @@ export default function Examples() {
   const [mounted, setMounted] = useState(true);
 
   return (
-    <section id="examples" className="py-24">
+    <section id="examples" className="py-24 bg-slate-900">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Découvrez ce que vous pouvez créer
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             Des objets simples aux conceptions complexes, notre plateforme rend
             la création 3D accessible à tous.
           </p>
         </div>
 
         <Tabs defaultValue="simple" className="w-full max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="simple">Objets simples</TabsTrigger>
-            <TabsTrigger value="architecture">Architecture</TabsTrigger>
-            <TabsTrigger value="product">Design Produit</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-700">
+            <TabsTrigger
+              value="simple"
+              className="data-[state=active]:bg-slate-600 text-white"
+            >
+              Objets simples
+            </TabsTrigger>
+            <TabsTrigger
+              value="architecture"
+              className="data-[state=active]:bg-slate-600 text-white"
+            >
+              Architecture
+            </TabsTrigger>
+            <TabsTrigger
+              value="product"
+              className="data-[state=active]:bg-slate-600 text-white"
+            >
+              Design Produit
+            </TabsTrigger>
           </TabsList>
 
-          <Card className="border border-border/40 bg-card/30 backdrop-blur">
+          <Card className="border border-slate-700 bg-slate-800/50 backdrop-blur">
             <CardContent className="p-1">
               <TabsContent value="simple" className="mt-0">
                 <div className="h-[400px] w-full rounded-md overflow-hidden">

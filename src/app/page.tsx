@@ -9,8 +9,8 @@ import Footer from "@/components/landing/footer";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="min-h-screen bg-slate-900 text-white">
+      <header className="sticky top-0 z-50 w-full border-b border-slate-700 bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
@@ -19,28 +19,35 @@ export default function LandingPage() {
           <nav className="hidden md:flex items-center gap-6">
             <Link
               href="#features"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-slate-300 hover:text-white transition-colors"
             >
               Fonctionnalités
             </Link>
             <Link
               href="#examples"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-slate-300 hover:text-white transition-colors"
             >
               Exemples
             </Link>
             <Link
               href="#pricing"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-slate-300 hover:text-white transition-colors"
             >
               Prix
             </Link>
           </nav>
           <div className="flex items-center gap-2">
-            <Button variant="outline" asChild>
+            <Button
+              variant="outline"
+              className="border-slate-600 text-white hover:bg-slate-700"
+              asChild
+            >
               <Link href="/login">Connexion</Link>
             </Button>
-            <Button asChild>
+            <Button
+              className="bg-blue-700 hover:bg-blue-600 text-white"
+              asChild
+            >
               <Link href="/dashboard">Commencer</Link>
             </Button>
           </div>

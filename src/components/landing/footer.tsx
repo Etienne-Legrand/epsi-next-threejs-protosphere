@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-card/10 backdrop-blur">
+    <footer className="border-t border-slate-700 bg-slate-900 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
@@ -12,7 +12,7 @@ export default function Footer() {
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
               <span className="text-xl font-bold">Protosphere</span>
             </div>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-slate-300 mb-4">
               Une plateforme moderne de conception 3D pour créateurs et équipes.
               Créez, collaborez et donnez vie à vos idées.
             </p>
@@ -24,7 +24,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#features"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Fonctionnalités
                 </Link>
@@ -32,7 +32,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#pricing"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Prix
                 </Link>
@@ -40,7 +40,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#testimonials"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Avis
                 </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Documentation
                 </Link>
@@ -62,7 +62,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Tutoriels
                 </Link>
@@ -70,7 +70,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Blog
                 </Link>
@@ -78,7 +78,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Communauté
                 </Link>
@@ -92,7 +92,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   À propos
                 </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Contact
                 </Link>
@@ -108,7 +108,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Confidentialité
                 </Link>
@@ -116,7 +116,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm text-slate-400 hover:text-white transition-colors"
                 >
                   Conditions d'utilisation
                 </Link>
@@ -125,15 +125,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border/40 mt-12 pt-8">
+        <div className="border-t border-slate-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-400">
               © 2025 Protosphere. Tous droits réservés.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link
                 href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-slate-400 hover:text-white transition-colors"
               >
                 <svg
                   className="h-5 w-5"
@@ -150,7 +150,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-slate-400 hover:text-white transition-colors"
               >
                 <svg
                   className="h-5 w-5"
@@ -167,7 +167,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="#"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-slate-400 hover:text-white transition-colors"
               >
                 <svg
                   className="h-5 w-5"

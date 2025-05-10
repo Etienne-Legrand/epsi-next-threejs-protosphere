@@ -40,13 +40,13 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 bg-black/5">
+    <section id="testimonials" className="py-24 bg-slate-800">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Ce que disent nos utilisateurs
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             Rejoignez des milliers de créateurs qui donnent vie à leurs idées
             avec notre plateforme.
           </p>
@@ -56,7 +56,7 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
-              className="card-hover border border-border/40 bg-card/50 backdrop-blur h-full"
+              className="card-hover border border-slate-700 bg-slate-900/50 backdrop-blur h-full text-white"
             >
               <CardContent className="pt-6">
                 <div className="flex items-center mb-4">
@@ -69,14 +69,10 @@ export default function Testimonials() {
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">{testimonial.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {testimonial.role}
-                    </p>
+                    <p className="text-xs text-slate-400">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {testimonial.content}
-                </p>
+                <p className="text-sm text-slate-300">{testimonial.content}</p>
               </CardContent>
               <CardFooter className="pt-0">
                 <div className="flex text-amber-400">

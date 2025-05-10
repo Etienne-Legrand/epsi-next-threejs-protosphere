@@ -67,13 +67,13 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-24">
+    <section id="pricing" className="py-24 bg-slate-900">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Tarification simple et transparente
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             Choisissez le forfait qui vous convient et commencez à créer dès
             aujourd'hui.
           </p>
@@ -83,39 +83,41 @@ export default function Pricing() {
           {tiers.map((tier, index) => (
             <Card
               key={index}
-              className={`card-hover border border-border/40 ${
+              className={`card-hover border ${
                 tier.popular
-                  ? "bg-secondary/30 border-primary/20 shadow-md"
-                  : "bg-card/20"
-              } backdrop-blur`}
+                  ? "bg-slate-800/70 border-primary/20 shadow-md"
+                  : "bg-slate-900/70 border-slate-700"
+              } backdrop-blur text-white`}
             >
               <CardHeader>
                 <CardTitle>{tier.name}</CardTitle>
-                <CardDescription>{tier.description}</CardDescription>
+                <CardDescription className="text-slate-400">
+                  {tier.description}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="mb-4">
                   <span className="text-4xl font-bold">{tier.price}</span>
-                  <span className="text-muted-foreground ml-1">
-                    {tier.duration}
-                  </span>
+                  <span className="text-slate-400 ml-1">{tier.duration}</span>
                 </div>
 
                 <ul className="space-y-2 mb-6">
                   {tier.features.map((feature, i) => (
                     <li key={i} className="flex items-center">
                       <Check className="h-4 w-4 mr-2 text-green-500" />
-                      <span className="text-sm">{feature}</span>
+                      <span className="text-sm text-slate-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
               <CardFooter>
                 <Button
-                  className={`w-full ${
+                  className={`w-full text-slate-950 ${
                     tier.popular
-                      ? "bg-gradient-to-r from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))] hover:from-[hsl(var(--accent-purple))] hover:to-[hsl(var(--accent-blue))]"
-                      : ""
+                      ? "bg-blue-700 hover:bg-blue-600 text-white"
+                      : tier.buttonVariant === "outline"
+                      ? "border-slate-600 hover:bg-slate-700 text-white"
+                      : "bg-slate-700 hover:bg-slate-600"
                   }`}
                   variant={tier.buttonVariant as any}
                   asChild
@@ -128,7 +130,7 @@ export default function Pricing() {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="text-muted-foreground">
+          <p className="text-slate-400">
             Tous les forfaits incluent un essai de 14 jours. Aucune carte de
             crédit requise.
           </p>
