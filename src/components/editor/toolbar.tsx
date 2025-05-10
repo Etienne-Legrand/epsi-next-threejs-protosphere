@@ -11,8 +11,8 @@ import {
   MousePointer,
   Move,
   Maximize2,
-  RotateCw,
-  Eraser,
+  RefreshCw,
+  Trash2,
   Copy,
   Scissors,
   AlignCenter,
@@ -176,7 +176,7 @@ export default function EditorToolbar({
                 }`}
                 onClick={() => handleToolClick("rotate")}
               >
-                <RotateCw className="h-4 w-4" />
+                <RefreshCw className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Pivoter (R)</TooltipContent>
@@ -248,7 +248,7 @@ export default function EditorToolbar({
                 onClick={() => handleClipboardOperation("delete")}
                 disabled={!selectedObject}
               >
-                <Eraser className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Supprimer (Del)</TooltipContent>

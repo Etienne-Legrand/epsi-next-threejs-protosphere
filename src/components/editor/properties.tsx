@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   X,
+  Trash2,
   Copy,
   Box,
   Cylinder,
@@ -512,7 +513,7 @@ export default function EditorProperties({
                     className="w-full"
                     onClick={handleDeleteObject}
                   >
-                    <X className="h-4 w-4 mr-2" />
+                    <Trash2 className="h-4 w-4 mr-2" />
                     Supprimer l'objet
                   </Button>
                 </div>
