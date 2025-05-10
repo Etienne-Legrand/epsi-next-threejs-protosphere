@@ -21,6 +21,8 @@ export interface Object3D {
   id: string;
   name: string;
   type: ObjectType;
+  visible: boolean;
+  layerId?: string;
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
@@ -123,34 +125,34 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   // Scene state
   scene: {
     objects: [
-      {
-        id: "cube-1",
-        name: "Cube 1",
-        type: "cube",
-        position: { x: 0, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 },
-        scale: { x: 1, y: 1, z: 1 },
-        material: {
-          color: "#4c6ef5",
-          metalness: 0.1,
-          roughness: 0.2,
-          opacity: 1.0,
-        },
-      },
-      {
-        id: "sphere-1",
-        name: "Sphère 1",
-        type: "sphere",
-        position: { x: 2, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 },
-        scale: { x: 1, y: 1, z: 1 },
-        material: {
-          color: "#ae3ec9",
-          metalness: 0.1,
-          roughness: 0.2,
-          opacity: 1.0,
-        },
-      },
+      // {
+      //   id: "cube-1",
+      //   name: "Cube 1",
+      //   type: "cube",
+      //   position: { x: 0, y: 0, z: 0 },
+      //   rotation: { x: 0, y: 0, z: 0 },
+      //   scale: { x: 1, y: 1, z: 1 },
+      //   material: {
+      //     color: "#4c6ef5",
+      //     metalness: 0.1,
+      //     roughness: 0.2,
+      //     opacity: 1.0,
+      //   },
+      // },
+      // {
+      //   id: "sphere-1",
+      //   name: "Sphère 1",
+      //   type: "sphere",
+      //   position: { x: 2, y: 0, z: 0 },
+      //   rotation: { x: 0, y: 0, z: 0 },
+      //   scale: { x: 1, y: 1, z: 1 },
+      //   material: {
+      //     color: "#ae3ec9",
+      //     metalness: 0.1,
+      //     roughness: 0.2,
+      //     opacity: 1.0,
+      //   },
+      // },
     ],
   },
   selectedObjectId: null,
@@ -201,6 +203,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       id: newId,
       name: newName,
       type: type,
+      visible: true,
+      layerId: undefined,
       position: { x: 0, y: 0, z: 0 },
       rotation: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },

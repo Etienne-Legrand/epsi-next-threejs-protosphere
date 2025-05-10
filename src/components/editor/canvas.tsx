@@ -232,64 +232,68 @@ function Scene({ selectedObject, setSelectedObject }: EditorCanvasProps) {
       <directionalLight position={[-10, 5, -10]} intensity={0.8} />
 
       {/* The 3D objects */}
-      {scene.objects.map((object) => (
-        <mesh
-          key={object.id}
-          position={[object.position.x, object.position.y, object.position.z]}
-          rotation={[object.rotation.x, object.rotation.y, object.rotation.z]}
-          scale={[object.scale.x, object.scale.y, object.scale.z]}
-          onClick={(e) => handleSelect(object.id, e)}
-          ref={(mesh) => {
-            if (mesh) objectsRef.current[object.id] = mesh;
-            if (selectedObject === object.id) selectedRef.current = mesh;
-          }}
-          castShadow
-          receiveShadow
-        >
-          {object.type === "cube" && <boxGeometry args={[1, 1, 1]} />}
-          {object.type === "sphere" && <sphereGeometry args={[0.7, 32, 32]} />}
-          {object.type === "cylinder" && (
-            <cylinderGeometry args={[0.5, 0.5, 1.5, 32]} />
-          )}
-          {object.type === "cone" && <coneGeometry args={[0.7, 1.5, 32]} />}
-          {object.type === "torus" && (
-            <torusGeometry args={[0.5, 0.2, 16, 32]} />
-          )}
-          {object.type === "plane" && <planeGeometry args={[1.5, 1.5]} />}
-          {object.type === "pyramid" && <coneGeometry args={[0.7, 1.5, 4]} />}
-          {object.type === "text" && (
-            <mesh>
-              {/* Text is a placeholder, can be replaced with proper Text component */}
-              <boxGeometry args={[1, 0.5, 0.1]} />
-            </mesh>
-          )}
-
-          <meshStandardMaterial
-            color={object.material.color}
-            metalness={object.material.metalness}
-            roughness={object.material.roughness}
-            transparent={object.material.opacity < 1}
-            opacity={object.material.opacity}
-            emissive={selectedObject === object.id ? "#333333" : "#000000"}
-          />
-
-          {/* Label for the object */}
-          <Html
-            position={[0, 1.2, 0]}
-            center
-            distanceFactor={10}
-            sprite
-            occlude
-            className={`pointer-events-none transition-opacity ${
-              selectedObject === object.id ? "opacity-100" : "opacity-0"
-            }`}
+      {scene.objects
+        .filter((object) => object.visible !== false)
+        .map((object) => (
+          <mesh
+            key={object.id}
+            position={[object.position.x, object.position.y, object.position.z]}
+            rotation={[object.rotation.x, object.rotation.y, object.rotation.z]}
+            scale={[object.scale.x, object.scale.y, object.scale.z]}
+            onClick={(e) => handleSelect(object.id, e)}
+            ref={(mesh) => {
+              if (mesh) objectsRef.current[object.id] = mesh;
+              if (selectedObject === object.id) selectedRef.current = mesh;
+            }}
+            castShadow
+            receiveShadow
           >
-            <div className="px-2 py-1 rounded-md bg-background border border-border text-xs font-mono">
-              {object.name}
-            </div>
-          </Html>
-        </mesh>
-      ))}
+            {object.type === "cube" && <boxGeometry args={[1, 1, 1]} />}
+            {object.type === "sphere" && (
+              <sphereGeometry args={[0.7, 32, 32]} />
+            )}
+            {object.type === "cylinder" && (
+              <cylinderGeometry args={[0.5, 0.5, 1.5, 32]} />
+            )}
+            {object.type === "cone" && <coneGeometry args={[0.7, 1.5, 32]} />}
+            {object.type === "torus" && (
+              <torusGeometry args={[0.5, 0.2, 16, 32]} />
+            )}
+            {object.type === "plane" && <planeGeometry args={[1.5, 1.5]} />}
+            {object.type === "pyramid" && <coneGeometry args={[0.7, 1.5, 4]} />}
+            {object.type === "text" && (
+              <mesh>
+                {/* Text is a placeholder, can be replaced with proper Text component */}
+                <boxGeometry args={[1, 0.5, 0.1]} />
+              </mesh>
+            )}
+
+            <meshStandardMaterial
+              color={object.material.color}
+              metalness={object.material.metalness}
+              roughness={object.material.roughness}
+              transparent={object.material.opacity < 1}
+              opacity={object.material.opacity}
+              emissive={selectedObject === object.id ? "#333333" : "#000000"}
+            />
+
+            {/* Label for the object */}
+            <Html
+              position={[0, 1.2, 0]}
+              center
+              distanceFactor={10}
+              sprite
+              occlude
+              className={`pointer-events-none transition-opacity ${
+                selectedObject === object.id ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div className="px-2 py-1 rounded-md bg-background border border-border text-xs font-mono">
+                {object.name}
+              </div>
+            </Html>
+          </mesh>
+        ))}
       {/* The background plane to receive drag & drop and handle deselection */}
       <mesh
         position={[0, -0.001, 0]}
