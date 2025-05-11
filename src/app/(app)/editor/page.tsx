@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import EditorHeader from "@/components/editor/header";
 import EditorSidebar from "@/components/editor/sidebar";
 import EditorCanvas from "@/components/editor/canvas";
 import EditorProperties from "@/components/editor/properties";
 import EditorToolbar from "@/components/editor/toolbar";
-import { toast } from "sonner";
 import { useEditorStore } from "@/lib/store/editor-store";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function EditorPage() {
+// Composant qui encapsule la logique utilisant useSearchParams
+function EditorContent() {
   const searchParams = useSearchParams();
   const projectId = searchParams.get("project");
   const templateId = searchParams.get("template");
@@ -46,7 +47,6 @@ export default function EditorPage() {
     }
 
     // Initialiser l'historique avec l'état actuel comme point de départ
-    // Important de le faire après le chargement du projet pour capturer l'état initial
     setTimeout(() => {
       clearHistory();
       // toast.success("Historique annuler/refaire initialisé");
@@ -69,7 +69,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-slate-950 overflow-hidden">
+    <>
       <EditorHeader
         projectName={useEditorStore.getState().projectName}
         isCollaborating={isCollaborating}
@@ -102,6 +102,21 @@ export default function EditorPage() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+
+// Composant principal qui utilise Suspense
+export default function EditorPage() {
+  return (
+    <div className="flex flex-col h-screen bg-slate-950 overflow-hidden">
+      <Suspense
+        fallback={
+          <div className="p-4 text-white">Chargement de l'éditeur...</div>
+        }
+      >
+        <EditorContent />
+      </Suspense>
     </div>
   );
 }
