@@ -10,30 +10,7 @@ import {
   useGLTF,
   Environment,
 } from "@react-three/drei";
-
-// Simple 3D scene for hero section
-function HeroScene() {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#4c6ef5" />
-      </mesh>
-      <mesh position={[-1.2, 0, 0]}>
-        <sphereGeometry args={[0.7, 32, 32]} />
-        <meshStandardMaterial color="#ae3ec9" metalness={0.5} roughness={0.2} />
-      </mesh>
-      <mesh position={[1.2, 0, 0]}>
-        <torusGeometry args={[0.6, 0.2, 16, 32]} />
-        <meshStandardMaterial color="#22c55e" metalness={0.3} roughness={0.4} />
-      </mesh>
-      <OrbitControls autoRotate autoRotateSpeed={0.6} enableZoom={false} />
-      <Environment preset="city" />
-    </>
-  );
-}
+import { SimpleObjects } from "./examples";
 
 export default function LandingHero() {
   const [mounted, setMounted] = useState(false);
@@ -78,8 +55,8 @@ export default function LandingHero() {
           <div className="h-[400px] max-w-xl mx-auto lg:h-[500px] w-full rounded-xl overflow-hidden border border-slate-700 shadow-lg">
             {mounted && (
               <Canvas>
-                <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                <HeroScene />
+                <PerspectiveCamera makeDefault position={[0, 2.5, 8]} />
+                <SimpleObjects />
               </Canvas>
             )}
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Canvas } from "@react-three/fiber";
@@ -9,121 +9,272 @@ import {
   PerspectiveCamera,
   Environment,
 } from "@react-three/drei";
+import * as THREE from "three";
 
 // Example scenes for the tabs
 function SimpleObjects() {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      {/* Simple geometric shapes arranged as a sculpture */}
-      <group position={[0, 0, 0]}>
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="#4c6ef5" />
-        </mesh>
-        <mesh position={[0, 1.2, 0]}>
-          <sphereGeometry args={[0.7, 32, 32]} />
-          <meshStandardMaterial
-            color="#ae3ec9"
-            metalness={0.5}
-            roughness={0.2}
-          />
-        </mesh>
-        <mesh position={[0, -1.2, 0]}>
-          <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
-          <meshStandardMaterial color="#22c55e" />
-        </mesh>
-      </group>
-      <OrbitControls autoRotate autoRotateSpeed={1} enableZoom={false} />
-      <Environment preset="sunset" />
-    </>
-  );
-}
+  const bodyMaterialProps = {
+    color: 0x4b8c3e,
+    metalness: 0.4,
+    roughness: 0.4,
+    opacity: 0.9,
+    transparent: true,
+    side: THREE.DoubleSide,
+  };
 
-function ArchitectureModel() {
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      {/* Simple house model */}
-      <group position={[0, -1, 0]}>
-        {/* House base */}
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[3, 1, 2]} />
-          <meshStandardMaterial color="#94a3b8" />
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[10, 10, 5]} intensity={1.3} />
+
+      <group position={[0, 0.25, 0]}>
+        {/* Base et corps inférieur */}
+        <mesh position={[0, -1, 0]}>
+          <sphereGeometry
+            args={[1.5, 32, 16, 0, Math.PI * 2, 0, Math.PI / 1.5]}
+          />
+          <meshStandardMaterial {...bodyMaterialProps} />
         </mesh>
-        {/* Roof */}
-        <mesh position={[0, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
-          <boxGeometry args={[3, 1.5, 2]} />
-          <meshStandardMaterial color="#ef4444" />
+
+        {/* Corps bas */}
+        <mesh position={[0, 0.6, 0]}>
+          <coneGeometry args={[1.299, 1.7, 32]} />
+          <meshStandardMaterial {...bodyMaterialProps} />
         </mesh>
-        {/* Door */}
-        <mesh position={[0, 0, 1.01]}>
-          <boxGeometry args={[0.6, 0.8, 0.1]} />
-          <meshStandardMaterial color="#713f12" />
+
+        {/* Corps supérieur */}
+        <mesh position={[0, 0.2, 0]} rotation={[Math.PI, 0, 0]}>
+          <coneGeometry args={[1, 2.5, 32]} />
+          <meshStandardMaterial {...bodyMaterialProps} />
         </mesh>
-        {/* Windows */}
-        <mesh position={[-1, 0.2, 1.01]}>
-          <boxGeometry args={[0.5, 0.5, 0.1]} />
-          <meshStandardMaterial color="#0ea5e9" />
+
+        {/* Bec verseur */}
+        <mesh
+          position={[-0.87, 1.2, 0]}
+          rotation={[Math.PI, 0, -Math.PI / 2.5]}
+        >
+          <coneGeometry args={[0.2, 0.4, 32]} />
+          <meshStandardMaterial {...bodyMaterialProps} />
         </mesh>
-        <mesh position={[1, 0.2, 1.01]}>
-          <boxGeometry args={[0.5, 0.5, 0.1]} />
-          <meshStandardMaterial color="#0ea5e9" />
+
+        {/* Anse de la carafe */}
+        <mesh position={[1.1, 0.2, 0]} rotation={[0, Math.PI, Math.PI / 5]}>
+          <torusGeometry args={[0.9, 0.15, 16, 32, Math.PI * 1.2]} />
+          <meshStandardMaterial {...bodyMaterialProps} />
         </mesh>
       </group>
-      <OrbitControls autoRotate autoRotateSpeed={0.5} enableZoom={false} />
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={0.5}
+        enableZoom={true}
+        minDistance={3}
+        maxDistance={15}
+      />
       <Environment preset="city" />
     </>
   );
 }
 
-function ProductDesign() {
+function ArchitectureModel() {
+  const windowMaterialProps = {
+    color: 0x5d5e60,
+    metalness: 0.4,
+    roughness: 0,
+    opacity: 0.4,
+    transparent: true,
+  };
+
   return (
     <>
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
-      {/* Phone model */}
-      <group position={[0, 0, 0]}>
-        {/* Phone body */}
-        <mesh position={[0, 0, 0]} castShadow>
-          <boxGeometry args={[2, 4, 0.2]} />
-          <meshStandardMaterial
-            color="#171717"
-            metalness={0.8}
-            roughness={0.2}
-          />
+
+      <group position={[0, -1, 0]}>
+        {/* Base/Terrain */}
+        <mesh position={[0, 0, 0]} receiveShadow>
+          <boxGeometry args={[10, 0.3, 10]} />
+          <meshStandardMaterial color="#767a3f" />
         </mesh>
-        {/* Screen */}
-        <mesh position={[0, 0, 0.11]} receiveShadow>
-          <boxGeometry args={[1.8, 3.8, 0.01]} />
-          <meshStandardMaterial
-            color="#18181b"
-            metalness={0.5}
-            roughness={0.1}
-          />
+
+        {/* House main structure */}
+        <mesh position={[0, 1, 0]} castShadow>
+          <boxGeometry args={[5, 2, 4]} />
+          <meshStandardMaterial color="#f7f6ee" />
         </mesh>
-        {/* Camera island */}
-        <mesh position={[0.5, 1.5, 0.2]}>
-          <cylinderGeometry args={[0.2, 0.2, 0.1, 32]} />
-          <meshStandardMaterial
-            color="#171717"
-            metalness={0.9}
-            roughness={0.2}
-          />
+
+        {/* Roof */}
+        <mesh position={[0, 3, 0]} rotation={[0, Math.PI / 4, 0]} castShadow>
+          <coneGeometry args={[3.6, 2, 4]} />
+          <meshStandardMaterial color="#a35e3d" />
         </mesh>
-        {/* Camera lens */}
-        <mesh position={[0.5, 1.5, 0.25]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.1, 32]} />
-          <meshStandardMaterial
-            color="#0c0a09"
-            metalness={0.9}
-            roughness={0.1}
-          />
+
+        {/* Door */}
+        <mesh position={[0, 0.75, 2.01]} castShadow>
+          <boxGeometry args={[1, 1.5, 0.1]} />
+          <meshStandardMaterial color="#713f12" />
+        </mesh>
+
+        {/* Windows */}
+        <mesh position={[-1.5, 1.2, 2.01]} castShadow>
+          <boxGeometry args={[0.8, 0.8, 0.1]} />
+          <meshStandardMaterial {...windowMaterialProps} />
+        </mesh>
+
+        <mesh position={[1.5, 1.2, 2.01]} castShadow>
+          <boxGeometry args={[0.8, 0.8, 0.1]} />
+          <meshStandardMaterial {...windowMaterialProps} />
+        </mesh>
+
+        {/* Side Windows */}
+        <mesh position={[2.51, 1.2, 0]} castShadow>
+          <boxGeometry args={[0.1, 0.8, 0.8]} />
+          <meshStandardMaterial {...windowMaterialProps} />
+        </mesh>
+
+        <mesh position={[-2.51, 1.2, 0]} castShadow>
+          <boxGeometry args={[0.1, 0.8, 0.8]} />
+          <meshStandardMaterial {...windowMaterialProps} />
+        </mesh>
+
+        {/* Chimney */}
+        <mesh position={[1.5, 3, -1]} castShadow>
+          <boxGeometry args={[0.6, 1.5, 0.6]} />
+          <meshStandardMaterial color="#a1a1aa" />
+        </mesh>
+
+        {/* Tree trunk */}
+        <mesh position={[3, 0.9, 3.5]} castShadow>
+          <cylinderGeometry args={[0.1, 0.2, 1.6, 8]} />
+          <meshStandardMaterial color="#854d0e" />
+        </mesh>
+
+        {/* Tree leaves */}
+        <mesh position={[3, 1.8, 3.5]} castShadow>
+          <sphereGeometry args={[0.8, 16, 16]} />
+          <meshStandardMaterial color="#22c55e" />
         </mesh>
       </group>
-      <OrbitControls autoRotate autoRotateSpeed={0.7} enableZoom={false} />
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={0.5}
+        enableZoom={true}
+        minDistance={3}
+        maxDistance={15}
+      />
+      <Environment preset="sunset" />
+    </>
+  );
+}
+
+function ProductDesign() {
+  // Matériaux
+  const frameMaterial = {
+    color: "#d1d5db", // Couleur argentée
+    metalness: 0.8,
+    roughness: 0.2,
+  };
+
+  const screenMaterial = {
+    color: "#18181b",
+    metalness: 0.5,
+    roughness: 0.1,
+  };
+
+  const cameraMaterial = {
+    color: "#171717",
+    metalness: 0.9,
+    roughness: 0.2,
+  };
+
+  const lensMaterial = {
+    color: "#0c0a09",
+    metalness: 0.9,
+    roughness: 0.1,
+  };
+
+  const buttonMaterial = {
+    color: "#b8b8b8",
+    metalness: 0.6,
+  };
+
+  return (
+    <>
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+
+      <group position={[0, 0, 0]}>
+        {/* Corps principal de l'iPhone avec coins arrondis */}
+        <mesh position={[0, 0, 0]} castShadow>
+          <boxGeometry args={[2.3, 4.6, 0.3]} />
+          <meshStandardMaterial {...frameMaterial} />
+        </mesh>
+
+        {/* Écran avec bordures plus fines */}
+        <mesh position={[0, 0, -0.16]} receiveShadow>
+          <boxGeometry args={[2.2, 4.5, 0.01]} />
+          <meshStandardMaterial {...screenMaterial} />
+        </mesh>
+
+        {/* Module caméra (carré avec coins arrondis) */}
+        <mesh position={[-0.6, 1.6, 0.16]} castShadow>
+          <boxGeometry args={[1.0, 1.0, 0.15]} />
+          <meshStandardMaterial {...cameraMaterial} color="#a7a8aa" />
+        </mesh>
+
+        {/* Objectifs de l'appareil photo */}
+        <mesh position={[-0.8, 1.8, 0.25]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.1, 32]} />
+          <meshStandardMaterial {...cameraMaterial} />
+        </mesh>
+        <mesh position={[-0.8, 1.8, 0.31]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} />
+          <meshStandardMaterial {...lensMaterial} />
+        </mesh>
+
+        {/* Deuxième objectif */}
+        <mesh position={[-0.4, 1.8, 0.25]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.1, 32]} />
+          <meshStandardMaterial {...cameraMaterial} />
+        </mesh>
+        <mesh position={[-0.4, 1.8, 0.31]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} />
+          <meshStandardMaterial {...lensMaterial} />
+        </mesh>
+
+        {/* Troisième objectif */}
+        <mesh position={[-0.8, 1.4, 0.25]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.1, 32]} />
+          <meshStandardMaterial {...cameraMaterial} />
+        </mesh>
+        <mesh position={[-0.8, 1.4, 0.31]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} />
+          <meshStandardMaterial {...lensMaterial} />
+        </mesh>
+
+        {/* Bouton latéral (power) */}
+        <mesh position={[1.15, 0.8, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.05, 0.5, 0.1]} />
+          <meshStandardMaterial {...buttonMaterial} />
+        </mesh>
+
+        {/* Boutons de volume */}
+        <mesh position={[-1.15, 0.5, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.05, 0.3, 0.1]} />
+          <meshStandardMaterial {...buttonMaterial} />
+        </mesh>
+        <mesh position={[-1.15, 0.1, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.05, 0.3, 0.1]} />
+          <meshStandardMaterial {...buttonMaterial} />
+        </mesh>
+      </group>
+
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={0.5}
+        enableZoom={true}
+        minDistance={3}
+        maxDistance={15}
+      />
       <Environment preset="apartment" />
     </>
   );
@@ -163,7 +314,7 @@ export default function Examples() {
               value="product"
               className="data-[state=active]:bg-slate-600 text-white"
             >
-              Design Produit
+              Design produit
             </TabsTrigger>
           </TabsList>
 
@@ -173,7 +324,7 @@ export default function Examples() {
                 <div className="h-[400px] w-full rounded-md overflow-hidden">
                   {mounted && (
                     <Canvas>
-                      <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                      <PerspectiveCamera makeDefault position={[0, 2.5, 6]} />
                       <SimpleObjects />
                     </Canvas>
                   )}
@@ -184,7 +335,7 @@ export default function Examples() {
                 <div className="h-[400px] w-full rounded-md overflow-hidden">
                   {mounted && (
                     <Canvas>
-                      <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                      <PerspectiveCamera makeDefault position={[0, 0, 8]} />
                       <ArchitectureModel />
                     </Canvas>
                   )}
@@ -195,7 +346,7 @@ export default function Examples() {
                 <div className="h-[400px] w-full rounded-md overflow-hidden">
                   {mounted && (
                     <Canvas>
-                      <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                      <PerspectiveCamera makeDefault position={[-3, 1, 6]} />
                       <ProductDesign />
                     </Canvas>
                   )}
@@ -208,3 +359,5 @@ export default function Examples() {
     </section>
   );
 }
+
+export { SimpleObjects, ArchitectureModel, ProductDesign };
