@@ -16,28 +16,28 @@ export default function LandingPage() {
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
             <span className="text-xl font-bold">Protosphere</span>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden items-center gap-6 md:flex">
             <Link
               href="#features"
-              className="text-slate-300 hover:text-white transition-colors"
+              className="text-slate-300 transition-colors hover:text-white"
             >
               Fonctionnalités
             </Link>
             <Link
               href="#examples"
-              className="text-slate-300 hover:text-white transition-colors"
+              className="text-slate-300 transition-colors hover:text-white"
             >
               Exemples
             </Link>
             <Link
               href="#testimonials"
-              className="text-slate-300 hover:text-white transition-colors"
+              className="text-slate-300 transition-colors hover:text-white"
             >
               Avis
             </Link>
             <Link
               href="#pricing"
-              className="text-slate-300 hover:text-white transition-colors"
+              className="text-slate-300 transition-colors hover:text-white"
             >
               Prix
             </Link>
@@ -48,10 +48,15 @@ export default function LandingPage() {
               className="border-slate-600 text-white hover:bg-slate-700"
               asChild
             >
-              <Link href="/login">Connexion</Link>
+              <Link
+                // href="/login"
+                href="/dashboard"
+              >
+                Connexion
+              </Link>
             </Button>
             <Button
-              className="bg-blue-700 hover:bg-blue-600 text-white"
+              className="bg-blue-700 text-white hover:bg-blue-600"
               asChild
             >
               <Link href="/dashboard">Commencer</Link>

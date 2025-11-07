@@ -20,12 +20,12 @@ export default function DashboardHeader() {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[hsl(var(--accent-blue))] to-[hsl(var(--accent-purple))]"></div>
-            <span className="text-xl font-bold hidden md:inline-block">
+            <span className="hidden text-xl font-bold md:inline-block">
               Protosphere
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center space-x-4">
+          <nav className="hidden items-center space-x-4 md:flex">
             <Link
               href="/dashboard"
               className="text-sm font-medium transition-colors hover:text-primary"
@@ -33,13 +33,15 @@ export default function DashboardHeader() {
               Projets
             </Link>
             <Link
-              href="/gallery"
+              // href="/gallery"
+              href=""
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
               Galerie
             </Link>
             <Link
-              href="/learn"
+              // href="/learn"
+              href=""
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
               Apprendre
@@ -51,21 +53,21 @@ export default function DashboardHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-white hover:bg-slate-700"
+            className="text-muted-foreground hover:bg-slate-700 hover:text-white"
           >
             <Bell className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-white hover:bg-slate-700"
+            className="text-muted-foreground hover:bg-slate-700 hover:text-white"
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-white hover:bg-slate-700"
+            className="text-muted-foreground hover:bg-slate-700 hover:text-white"
           >
             <Settings className="h-5 w-5" />
           </Button>
@@ -85,7 +87,7 @@ export default function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-56 bg-slate-800 border-slate-700 text-white"
+              className="w-56 border-slate-700 bg-slate-800 text-white"
               align="end"
               forceMount
             >
@@ -101,17 +103,29 @@ export default function DashboardHeader() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-slate-700" />
               <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
-                <Link href="/profile" className="flex w-full">
+                <Link
+                  // href="/profile"
+                  href=""
+                  className="flex w-full"
+                >
                   Profil
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
-                <Link href="/settings" className="flex w-full">
+                <Link
+                  // href="/settings"
+                  href=""
+                  className="flex w-full"
+                >
                   Paramètres
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="hover:bg-slate-700 focus:bg-slate-700">
-                <Link href="/billing" className="flex w-full">
+                <Link
+                  // href="/billing"
+                  href=""
+                  className="flex w-full"
+                >
                   Facturation
                 </Link>
               </DropdownMenuItem>
