@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Protosphere
 
-## Getting Started
+Éditeur 3D collaboratif développé avec Next.js, React Three Fiber et TypeScript qui permet de créer et manipuler des scènes 3D en temps réel.
 
-First, run the development server:
+![Démo de l'application](docs/demo.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Prérequis
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Node.js 18+
+2. pnpm (recommandé) ou npm
+3. Navigateur moderne avec support WebGL
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clonez ce dépôt sur votre machine locale.
+2. Déplacez-vous dans le répertoire du projet
+3. Exécutez la commande `pnpm install` pour installer les dépendances.
 
-## Learn More
+## Utilisation
 
-To learn more about Next.js, take a look at the following resources:
+1. Exécutez la commande `pnpm run dev` pour démarrer le serveur de développement.
+2. Accédez à http://localhost:3000 dans votre navigateur pour utiliser l'application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Fonctionnalités
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Éditeur 3D interactif** avec manipulation d'objets en temps réel
+- **Objets 3D primitifs** : cubes, sphères, cylindres, cônes, torus, plans et pyramides
+- **Outils de transformation** : déplacement (G), rotation (R), et mise à l'échelle (S)
+- **Système de propriétés** : modification des matériaux, couleurs, métallicité et rugosité
+- **Gestion de scène** : hiérarchie d'objets avec visibilité et organisation par calques
+- **Historique d'actions** : annulation (Ctrl+Z) et rétablissement (Ctrl+Y)
+- **Presse-papiers** : copier (Ctrl+C), couper (Ctrl+X) et coller (Ctrl+V)
 
-## Deploy on Vercel
+## Technologies
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 15** : Framework React avec App Router
+- **React Three Fiber** : Rendu 3D avec Three.js
+- **Zustand** : Gestion d'état globale
