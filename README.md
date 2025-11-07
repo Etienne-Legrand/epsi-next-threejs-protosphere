@@ -2,7 +2,7 @@
 
 Éditeur 3D collaboratif développé avec Next.js, React Three Fiber et TypeScript qui permet de créer et manipuler des scènes 3D en temps réel.
 
-![Démo de l'application](docs/demo.png)
+https://github.com/user-attachments/assets/bb657967-6176-4fb1-ab97-a20ce817beb1
 
 ## Prérequis
 
